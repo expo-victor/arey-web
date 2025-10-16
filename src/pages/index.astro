@@ -59,7 +59,6 @@ const discography = [
 		alt: "Portada del álbum Historias de un Flamenco",
 		description:
 			"Descripción",
-		highlights: ["Tarjeta #1", "Tarjeta #2", "Tarjeta #3"],
 		links: [
 			{ label: "Spotify", url: "https://open.spotify.com/" },
 			{ label: "Apple Music", url: "https://music.apple.com/" },
@@ -73,7 +72,6 @@ const discography = [
 		alt: "Portada del álbum Historias de un Flamenco",
 		description:
 			"Descripción",
-		highlights: ["Tarjeta #1", "Tarjeta #2", "Tarjeta #3"],
 		links: [
 			{ label: "Spotify", url: "https://open.spotify.com/" },
 			{ label: "Apple Music", url: "https://music.apple.com/" },
@@ -87,7 +85,6 @@ const discography = [
 		alt: "Portada conceptual del disco Dos partes de mí",
 		description:
 			"Descripción",
-		highlights: ["Tarjeta #1", "Tarjeta #2", "Tarjeta #3"],
 		links: [
 			{ label: "Spotify", url: "https://open.spotify.com/" },
 			{ label: "Apple Music", url: "https://music.apple.com/" },
@@ -101,7 +98,6 @@ const discography = [
 		alt: "Portada artística del álbum Flamenco sin fronteras",
 		description:
 			"Descripción",
-		highlights: ["Tarjeta #1", "Tarjeta #2", "Tarjeta #3"],
 		links: [
 			{ label: "Spotify", url: "https://open.spotify.com/" },
 			{ label: "Apple Music", url: "https://music.apple.com/" },
@@ -115,7 +111,6 @@ const discography = [
 		alt: "Arte del álbum Camino al alma con la guitarra en primer plano",
 		description:
 			"Descripción",
-		highlights: ["Tarjeta #1", "Tarjeta #2", "Tarjeta #3"],
 		links: [
 			{ label: "Spotify", url: "https://open.spotify.com/" },
 			{ label: "Apple Music", url: "https://music.apple.com/" },
@@ -129,7 +124,6 @@ const discography = [
 		alt: "Portada del álbum Historias de un Flamenco",
 		description:
 			"Descripción",
-		highlights: ["Tarjeta #1", "Tarjeta #2", "Tarjeta #3"],
 		links: [
 			{ label: "Spotify", url: "https://open.spotify.com/" },
 			{ label: "Apple Music", url: "https://music.apple.com/" },
@@ -1129,29 +1123,13 @@ const contactMethods = [
 				font-size: 0.98rem;
 			}
 
-			.album-entry-highlights {
-				margin: 0;
-				list-style: none;
-				padding: 0;
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.55rem;
-			}
-
-			.album-entry-highlights li {
-				padding: 0.35rem 0.75rem;
-				border-radius: 999px;
-				background: var(--bg-muted);
-				color: var(--muted);
-				font-size: 0.84rem;
-			}
-
-			.album-entry-links {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.85rem;
-				font-size: 0.9rem;
-			}
+		.album-entry-links {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.85rem;
+			font-size: 0.9rem;
+			justify-content: center;
+		}
 
 			.album-entry-links a {
 				color: var(--accent-dark);
@@ -1869,19 +1847,14 @@ const contactMethods = [
 									<img src={album.cover} alt={album.alt} loading="lazy" decoding="async" />
 									<figcaption>{album.label}</figcaption>
 								</figure>
-								<div class="album-entry-body">
-									<h3 class="album-entry-title">{album.title}</h3>
-									<p class="album-entry-description">{album.description}</p>
-									<ul class="album-entry-highlights">
-										{album.highlights.map((item) => (
-											<li>{item}</li>
-										))}
-									</ul>
-									<div class="album-entry-links">
-										{album.links.map((link) => (
-											<a
-												href={link.url}
-												target="_blank"
+					<div class="album-entry-body">
+						<h3 class="album-entry-title">{album.title}</h3>
+						<p class="album-entry-description">{album.description}</p>
+						<div class="album-entry-links">
+							{album.links.map((link) => (
+								<a
+									href={link.url}
+									target="_blank"
 												rel="noreferrer"
 												aria-label={`Abrir ${link.label}`}
 												title={link.label}
