@@ -1,0 +1,539 @@
+---
+import type { AgendaEvent } from "../../server/agendaStore";
+import { getEventById, readEvents } from "../../server/agendaStore";
+
+export const prerender = false;
+
+const fallbackImage =
+	"https://images.unsplash.com/photo-1524230572899-a752b3835840?auto=format&fit=crop&w=1600&q=80";
+
+const paramsId = Astro.params.id ?? "";
+const event: AgendaEvent | null = paramsId ? await getEventById(paramsId) : null;
+
+if (!event) {
+	Astro.response.status = 404;
+}
+
+const allEvents = (await readEvents()).filter((item) => item.id !== event?.id);
+const sortedEvents = allEvents.sort((a, b) => a.date.localeCompare(b.date));
+const relatedEvents = sortedEvents.slice(0, 3);
+
+function parseEventDate(input: string | undefined, time?: string | undefined) {
+	if (!input) return null;
+	const [year, month, day] = input.split("-").map(Number);
+	if (!year || !month || !day) return null;
+	const [hour = 0, minute = 0] = (time ?? "").split(":").map(Number);
+	return new Date(year, month - 1, day, hour || 0, minute || 0);
+}
+
+const eventDate = event ? parseEventDate(event.date, event.time) : null;
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+const isPast = eventDate ? eventDate.getTime() < today.getTime() : false;
+
+const heroImage = event?.image || fallbackImage;
+const gallery = event?.gallery?.length ? event.gallery : [heroImage];
+
+const longDate = eventDate
+	? eventDate.toLocaleDateString("es-ES", {
+			weekday: "long",
+			day: "numeric",
+			month: "long",
+			year: "numeric",
+	  })
+	: event?.date ?? "";
+
+const simpleTime = eventDate && event?.time
+	? eventDate.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })
+	: event?.time ?? "";
+
+const metaTitle = event
+	? `${event.title} · Agenda de Antonio Rey`
+	: "Evento no encontrado · Agenda de Antonio Rey";
+
+const metaDescription = event
+	? `${event.title} en ${event.location ?? "próxima ubicación"}. Consulta horarios, detalles y material visual del concierto.`
+	: "La actuación que buscas no está disponible. Explora otras fechas confirmadas en la agenda de Antonio Rey.";
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{metaTitle}</title>
+		<meta name="description" content={metaDescription} />
+		<link
+			rel="icon"
+			type="image/png"
+			href="https://expoflamenco.com/wp-content/uploads/2024/08/favicon-75x75.png"
+		/>
+		<style>
+			:root {
+				color-scheme: light;
+				--bg: #f7f5f2;
+				--surface: #ffffff;
+				--surface-alt: #111;
+				--text: #1c1917;
+				--muted: #6b645d;
+				--accent: #b1212b;
+				--accent-dark: #78171d;
+				--border: #e6e1dc;
+				--radius-xl: 28px;
+				--radius-lg: 18px;
+				--shadow-soft: 0 24px 60px rgba(15, 8, 7, 0.12);
+				--shadow-hard: 0 18px 48px rgba(15, 8, 7, 0.25);
+				font-family: "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+			}
+
+			* {
+				box-sizing: border-box;
+			}
+
+			body {
+				margin: 0;
+				background: var(--bg);
+				color: var(--text);
+				line-height: 1.7;
+			}
+
+			a {
+				color: inherit;
+				text-decoration: none;
+			}
+
+			img {
+				display: block;
+				max-width: 100%;
+				border-radius: var(--radius-lg);
+			}
+
+			.page-container {
+				max-width: 1100px;
+				margin: 0 auto;
+				padding: clamp(1.2rem, 4vw, 2.6rem);
+				display: grid;
+				gap: clamp(2.4rem, 6vw, 3.6rem);
+			}
+
+			.back-link {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.6rem;
+				font-size: 0.9rem;
+				color: var(--accent-dark);
+				text-decoration: none;
+				font-weight: 600;
+				letter-spacing: 0.02em;
+			}
+
+			.back-link::before {
+				content: "←";
+				font-size: 1rem;
+			}
+
+			.event-hero {
+				position: relative;
+				display: grid;
+				gap: clamp(1.6rem, 4vw, 2rem);
+				padding: clamp(1.6rem, 4vw, 2.4rem);
+				background: var(--surface);
+				border-radius: var(--radius-xl);
+				box-shadow: var(--shadow-soft);
+				overflow: hidden;
+			}
+
+			.event-hero::after {
+				content: "";
+				position: absolute;
+				inset: 0;
+				background: radial-gradient(circle at top right, rgba(177, 33, 43, 0.08), transparent 55%);
+				pointer-events: none;
+			}
+
+			.event-hero-grid {
+				display: grid;
+				grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.1fr);
+				gap: clamp(1.6rem, 4vw, 2.2rem);
+				align-items: center;
+			}
+
+			.event-hero-media {
+				position: relative;
+				border-radius: var(--radius-xl);
+				overflow: hidden;
+				min-height: clamp(260px, 42vw, 420px);
+			}
+
+			.event-hero-media img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+
+			.event-status {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.4rem 0.85rem;
+				border-radius: 999px;
+				background: rgba(177, 33, 43, 0.1);
+				color: var(--accent-dark);
+				font-size: 0.8rem;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				font-weight: 600;
+			}
+
+			h1 {
+				margin: 0.6rem 0 0.4rem;
+				font-family: "Georgia", serif;
+				font-size: clamp(2.4rem, 6vw, 3.2rem);
+				line-height: 1.05;
+			}
+
+			.event-meta {
+				display: grid;
+				gap: 0.75rem;
+				margin: clamp(1rem, 3vw, 1.6rem) 0;
+				font-size: 0.98rem;
+				color: var(--muted);
+			}
+
+			.event-meta strong {
+				color: var(--text);
+			}
+
+			.hero-actions {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.8rem;
+				margin-top: clamp(0.9rem, 2.4vw, 1.4rem);
+			}
+
+			.button {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				gap: 0.4rem;
+				font-weight: 600;
+				font-size: 0.92rem;
+				letter-spacing: 0.02em;
+				padding: 0.75rem 1.6rem;
+				border-radius: 999px;
+				border: 1px solid transparent;
+				cursor: pointer;
+				transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
+			}
+
+			.button-primary {
+				background: var(--accent);
+				color: #fff;
+				box-shadow: var(--shadow-hard);
+			}
+
+			.button-primary:hover,
+			.button-primary:focus-visible {
+				transform: translateY(-2px);
+				background: var(--accent-dark);
+			}
+
+			.button-secondary {
+				background: rgba(177, 33, 43, 0.08);
+				color: var(--accent-dark);
+				border-color: rgba(177, 33, 43, 0.16);
+			}
+
+			.button-secondary:hover,
+			.button-secondary:focus-visible {
+				transform: translateY(-1px);
+				background: rgba(177, 33, 43, 0.12);
+			}
+
+			.section-card {
+				background: var(--surface);
+				padding: clamp(1.6rem, 4vw, 2.4rem);
+				border-radius: var(--radius-xl);
+				box-shadow: var(--shadow-soft);
+				display: grid;
+				gap: clamp(1.4rem, 3.6vw, 2.1rem);
+			}
+
+			.section-card h2 {
+				margin: 0;
+				font-family: "Georgia", serif;
+				font-size: clamp(1.8rem, 4vw, 2.4rem);
+			}
+
+			.section-card p {
+				margin: 0;
+				color: var(--muted);
+				font-size: 1rem;
+				text-align: justify;
+			}
+
+			.event-details-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+				gap: clamp(1.2rem, 3vw, 1.6rem);
+			}
+
+			.event-detail {
+				border-radius: var(--radius-lg);
+				background: rgba(177, 33, 43, 0.06);
+				border: 1px solid rgba(177, 33, 43, 0.1);
+				padding: 1.1rem 1.3rem;
+				display: grid;
+				gap: 0.4rem;
+			}
+
+			.event-detail span {
+				font-size: 0.78rem;
+				text-transform: uppercase;
+				letter-spacing: 0.14em;
+				font-weight: 600;
+				color: var(--accent);
+			}
+
+			.event-detail strong {
+				font-size: 1rem;
+				color: var(--text);
+			}
+
+			.gallery-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+				gap: clamp(1rem, 3vw, 1.5rem);
+			}
+
+			.gallery-grid figure {
+				position: relative;
+				margin: 0;
+				border-radius: var(--radius-lg);
+				overflow: hidden;
+				box-shadow: var(--shadow-soft);
+			}
+
+			.gallery-grid img {
+				width: 100%;
+				height: clamp(180px, 36vw, 260px);
+				object-fit: cover;
+			}
+
+			.related-list {
+				display: grid;
+				gap: 1rem;
+			}
+
+			.related-card {
+				border-radius: var(--radius-lg);
+				padding: 1.1rem 1.3rem;
+				border: 1px solid var(--border);
+				display: grid;
+				gap: 0.4rem;
+				background: #fff;
+				transition: transform 140ms ease, box-shadow 140ms ease;
+			}
+
+			.related-card:hover,
+			.related-card:focus-visible {
+				transform: translateY(-2px);
+				box-shadow: 0 18px 38px rgba(15, 8, 7, 0.12);
+			}
+
+			.related-card span {
+				font-size: 0.8rem;
+				color: var(--muted);
+			}
+
+			.related-card strong {
+				font-size: 1.05rem;
+				color: var(--text);
+			}
+
+			.contact-banner {
+				background: linear-gradient(135deg, #2b1216, #611c23);
+				color: #fff3f4;
+				border-radius: var(--radius-xl);
+				padding: clamp(1.6rem, 4vw, 2.3rem);
+				display: grid;
+				gap: 0.8rem;
+				box-shadow: var(--shadow-hard);
+			}
+
+			.contact-banner h2 {
+				margin: 0;
+				font-family: "Georgia", serif;
+				font-size: clamp(1.8rem, 4vw, 2.4rem);
+			}
+
+			.contact-banner p {
+				margin: 0;
+				color: rgba(255, 240, 241, 0.92);
+			}
+
+			.contact-actions {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.8rem;
+				margin-top: 0.6rem;
+			}
+
+			.contact-banner .button {
+				border-color: rgba(255, 255, 255, 0.3);
+				background: rgba(255, 255, 255, 0.12);
+				color: #fff;
+			}
+
+			.contact-banner .button:hover,
+			.contact-banner .button:focus-visible {
+				background: rgba(255, 255, 255, 0.22);
+			}
+
+			footer {
+				color: var(--muted);
+				font-size: 0.88rem;
+				text-align: center;
+				padding-bottom: 2rem;
+			}
+
+			@media (max-width: 960px) {
+				.event-hero-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			@media (max-width: 720px) {
+				.gallery-grid {
+					grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="page-container">
+			<a class="back-link" href="/#agenda">Volver a la agenda</a>
+
+			{event ? (
+				<>
+					<section class="event-hero">
+						<div class="event-hero-grid">
+							<div class="event-hero-media">
+								<img src={heroImage} alt={`Fotografía del evento ${event.title}`} loading="lazy" decoding="async" />
+							</div>
+							<div>
+								<span class="event-status">{isPast ? "Evento realizado" : "Próxima fecha"}</span>
+								<h1>{event.title}</h1>
+								<div class="event-meta">
+									<p>
+										<strong>{longDate}</strong>
+										{simpleTime && <> · {simpleTime} h</>}
+									</p>
+									{event.location && (
+										<p>
+											<strong>Ubicación:</strong> {event.location}
+										</p>
+									)}
+									{event.description && <p>{event.description}</p>}
+								</div>
+								<div class="hero-actions">
+									<a class="button button-primary" href="#contacto">Reservar fecha</a>
+									<a class="button button-secondary" href="/#agenda">Ver todas las actuaciones</a>
+								</div>
+							</div>
+						</div>
+					</section>
+
+					<section class="section-card">
+						<h2>Detalles del espectáculo</h2>
+						<p>
+							Este programa reúne composiciones propias de Antonio Rey junto a versiones renovadas de clásicos
+							flamencos, con arreglos específicos para teatros de temporada y festivales internacionales. La
+							formación se adapta al aforo e incluye percusión, palmas y artistas invitados sujetos a
+							disponibilidad.
+						</p>
+						<div class="event-details-grid">
+							<div class="event-detail">
+								<span>Fecha</span>
+								<strong>{longDate || "Por confirmar"}</strong>
+							</div>
+							<div class="event-detail">
+								<span>Horario</span>
+								<strong>{simpleTime ? `${simpleTime} h` : "A determinar"}</strong>
+							</div>
+							<div class="event-detail">
+								<span>Ciudad / recinto</span>
+								<strong>{event.location ?? "En negociación"}</strong>
+							</div>
+						</div>
+					</section>
+
+					<section class="section-card">
+						<h2>Galería visual</h2>
+						<p>Material gráfico para prensa, promotores y difusión en redes oficiales.</p>
+						<div class="gallery-grid">
+							{gallery.map((image, index) => (
+								<figure>
+									<img src={image} alt={`Galería del evento ${event.title} · Imagen ${index + 1}`} loading="lazy" decoding="async" />
+								</figure>
+							))}
+						</div>
+					</section>
+				</>
+			) : (
+				<section class="section-card">
+					<h2>Evento no disponible</h2>
+					<p>
+						La actuación a la que intentas acceder no está publicada actualmente. Puedes revisar la agenda completa o
+						escribirnos para recibir la información actualizada.
+					</p>
+					<div class="hero-actions">
+						<a class="button button-primary" href="/#agenda">Volver a la agenda</a>
+						<a class="button button-secondary" href="mailto:management@antonioreyflamenco.com"
+							>Solicitar información</a
+						>
+					</div>
+				</section>
+			)}
+
+			{event && relatedEvents.length > 0 && (
+				<section class="section-card">
+					<h2>Otras presentaciones</h2>
+					<div class="related-list">
+						{relatedEvents.map((item) => {
+							const relatedDate = parseEventDate(item.date, item.time);
+							const label = relatedDate
+								? relatedDate.toLocaleDateString("es-ES", {
+										day: "numeric",
+										month: "long",
+										year: "numeric",
+								  })
+								: item.date;
+
+							return (
+								<a class="related-card" href={`/agenda/${item.id}`}>
+									<strong>{item.title}</strong>
+									<span>{label}</span>
+									{item.location && <span>{item.location}</span>}
+								</a>
+							);
+						})}
+					</div>
+				</section>
+			)}
+
+			<section class="contact-banner" id="contacto">
+				<h2>Coordina una fecha con el equipo de Antonio Rey</h2>
+				<p>
+					Ponemos a tu disposición repertorio personalizado, riders técnicos y soporte de difusión para festivales,
+					teatros y eventos privados.
+				</p>
+				<div class="contact-actions">
+					<a class="button button-primary" href="mailto:management@antonioreyflamenco.com">Escribir a management</a>
+					<a class="button" href="https://wa.me/34600000000" target="_blank" rel="noreferrer">Contactar por WhatsApp</a>
+				</div>
+			</section>
+
+			<footer>© {new Date().getFullYear()} Antonio Rey · Agenda oficial.</footer>
+		</div>
+	</body>
+</html>

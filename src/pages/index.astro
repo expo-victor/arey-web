@@ -1,16 +1,1748 @@
 ---
+import { readEvents } from "../server/agendaStore";
+
+const currentYear = new Date().getFullYear();
+const heroImage = "/Princ.jpg";
+const heroImageAlt = "Antonio Rey interpretando en directo con su guitarra.";
+const bioImage = "/Princ2.jpg";
+const bioImageAlt = "Antonio Rey afinando su guitarra antes de salir al tablao.";
+const awards = [
+	{
+		image: "https://www.creaodontologia.com/wp-content/uploads/2025/03/placeholder-2.png",
+		alt: "Trofeo de guitarra flamenca sobre un escenario iluminado",
+		year: "2003",
+		title: "Concurso Nacional de Guitarra Flamenca · L'Hospitalet de Llobregat",
+		description: "Primer Premio de guitarra flamenca en l’Hospitalet de Llobregat.",
+	},
+	{
+		image: "https://www.creaodontologia.com/wp-content/uploads/2025/03/placeholder-2.png",
+		alt: "Trofeo de guitarra flamenca sobre un escenario iluminado",
+		year: "2003",
+		title: "Festival de Las Minas de La Unión",
+		description: "Premio Bordón Minero en el Festival Internacional del Cante de Las Minas.",
+	},
+	{
+		image: "https://www.creaodontologia.com/wp-content/uploads/2025/03/placeholder-2.png",
+		alt: "Trofeo de guitarra flamenca sobre un escenario iluminado",
+		year: "2004",
+		title: "Concurso Internacional de Guitarra Flamenca Los Cernícalos",
+		description: "Primer Premio en el certamen internacional organizado en Jerez de la Frontera.",
+	},
+	{
+		image: "https://www.creaodontologia.com/wp-content/uploads/2025/03/placeholder-2.png",
+		alt: "Trofeo de guitarra flamenca sobre un escenario iluminado",
+		year: "2008",
+		title: "Concurso Internacional de Guitarra Flamenca Niño Ricardo · Murcia",
+		description: "Premio de guitarra flamenca en el certamen Niño Ricardo.",
+	},
+	{
+		image: "https://www.creaodontologia.com/wp-content/uploads/2025/03/placeholder-2.png",
+		alt: "Trofeo de guitarra flamenca sobre un escenario iluminado",
+		year: "2010",
+		title: "Concurso Nacional de Arte Flamenco de Córdoba",
+		description: "Primer Premio de guitarra flamenca en el Gran Teatro de Córdoba.",
+	},
+	{
+		image: "https://www.creaodontologia.com/wp-content/uploads/2025/03/placeholder-2.png",
+		alt: "Trofeo de guitarra flamenca sobre un escenario iluminado",
+		year: "2012",
+		title: "Giraldillo al Toque · Bienal de Flamenco de Sevilla",
+		description: "Reconocimiento al mejor concierto de guitarra flamenca en la Bienal de Sevilla.",
+	},
+];
+const discography = [
+	{
+		title: "A través de Ti",
+		year: 2007,
+		label: "",
+		cover: "https://i.scdn.co/image/ab67616d00001e02a1a3e5bce98394dd2b45c291",
+		alt: "Portada del álbum Historias de un Flamenco",
+		description:
+			"Descripción",
+		highlights: ["Tarjeta #1", "Tarjeta #2", "Tarjeta #3"],
+		links: [
+			{ label: "Spotify", url: "https://open.spotify.com/" },
+			{ label: "Apple Music", url: "https://music.apple.com/" },
+		],
+	},
+	{
+		title: "Colores del Fuego",
+		year: 2011,
+		label: "",
+		cover: "https://i.scdn.co/image/ab67616d00001e021f9057c920d1efa0917831c7",
+		alt: "Portada del álbum Historias de un Flamenco",
+		description:
+			"Descripción",
+		highlights: ["Tarjeta #1", "Tarjeta #2", "Tarjeta #3"],
+		links: [
+			{ label: "Spotify", url: "https://open.spotify.com/" },
+			{ label: "Apple Music", url: "https://music.apple.com/" },
+		],
+	},
+	{
+		title: "Two Parts of Me",
+		year: 2017,
+		label: "",
+		cover: "https://i.scdn.co/image/ab67616d00001e021ae75e0b589b8f81562850ba",
+		alt: "Portada conceptual del disco Dos partes de mí",
+		description:
+			"Descripción",
+		highlights: ["Tarjeta #1", "Tarjeta #2", "Tarjeta #3"],
+		links: [
+			{ label: "Spotify", url: "https://open.spotify.com/" },
+			{ label: "Apple Music", url: "https://music.apple.com/" },
+		],
+	},
+	{
+		title: "Flamenco sin Fronteras",
+		year: 2020,
+		label: "",
+		cover: "https://i.scdn.co/image/ab67616d00001e02420fcb9a3dc81bdbc9bad8b1	",
+		alt: "Portada artística del álbum Flamenco sin fronteras",
+		description:
+			"Descripción",
+		highlights: ["Tarjeta #1", "Tarjeta #2", "Tarjeta #3"],
+		links: [
+			{ label: "Spotify", url: "https://open.spotify.com/" },
+			{ label: "Apple Music", url: "https://music.apple.com/" },
+		],
+	},
+	{
+		title: "Camino al Alma",
+		year: 2023,
+		label: "",
+		cover: "https://i.scdn.co/image/ab67616d00001e02f3cd0814d7f1a017c0e565f9",
+		alt: "Arte del álbum Camino al alma con la guitarra en primer plano",
+		description:
+			"Descripción",
+		highlights: ["Tarjeta #1", "Tarjeta #2", "Tarjeta #3"],
+		links: [
+			{ label: "Spotify", url: "https://open.spotify.com/" },
+			{ label: "Apple Music", url: "https://music.apple.com/" },
+		],
+	},
+	{
+		title: "Historias de un Flamenco",
+		year: 2024,
+		label: "",
+		cover: "https://i.scdn.co/image/ab67616d00001e021e862f2222f4b708b172411a",
+		alt: "Portada del álbum Historias de un Flamenco",
+		description:
+			"Descripción",
+		highlights: ["Tarjeta #1", "Tarjeta #2", "Tarjeta #3"],
+		links: [
+			{ label: "Spotify", url: "https://open.spotify.com/" },
+			{ label: "Apple Music", url: "https://music.apple.com/" },
+		],
+	},
+];
+
+const fallbackEventImage =
+	"https://images.unsplash.com/photo-1524230572899-a752b3835840?auto=format&fit=crop&w=1400&q=80";
+
+const parseAgendaDate = (dateStr: string, timeStr?: string) => {
+	if (!dateStr) return null;
+	const [year, month, day] = dateStr.split("-").map(Number);
+	if (!year || !month || !day) return null;
+	const [hour = 0, minute = 0] = (timeStr ?? "").split(":").map(Number);
+	return new Date(year, month - 1, day, hour || 0, minute || 0);
+};
+
+const formatMonthShort = (date?: Date | null) =>
+	date
+		?.toLocaleDateString("es-ES", { month: "short" })
+		.replace(".", "")
+		.toUpperCase();
+
+const formatLongDate = (date?: Date | null) =>
+	date
+		? date.toLocaleDateString("es-ES", {
+				weekday: "long",
+				day: "numeric",
+				month: "long",
+				year: "numeric",
+		  })
+		: "Fecha por confirmar";
+
+const normalizeLocation = (value?: string | null) => {
+	const trimmed = value?.trim() ?? "";
+	if (!trimmed) {
+		return { venue: "", city: "", summary: "" };
+	}
+
+	const parts = trimmed.split(",").map((part) => part.trim()).filter(Boolean);
+	if (parts.length === 0) {
+		return { venue: "", city: "", summary: "" };
+	}
+
+	if (parts.length === 1) {
+		return { venue: parts[0], city: "", summary: parts[0] };
+	}
+
+	const venue = parts[0];
+	const city = parts.slice(1).join(", ");
+	return {
+		venue,
+		city,
+		summary: city || venue,
+	};
+};
+
+const storedAgendaData = (await readEvents()).filter((event) => Boolean(event?.title));
+
+const agendaEvents = storedAgendaData
+	.map((event) => {
+		const title = event.title?.trim() || "Evento por confirmar";
+		const dateObj = parseAgendaDate(event.date, event.time);
+		const longDate = formatLongDate(dateObj);
+		const shortDate = dateObj
+			? dateObj.toLocaleDateString("es-ES", { day: "2-digit", month: "short" }).replace(".", "")
+			: "";
+		const timeLabel =
+			dateObj && event.time
+				? dateObj.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })
+				: event.time?.trim() ?? "";
+		const { city, venue, summary } = normalizeLocation(event.location);
+
+		return {
+			...event,
+			title,
+			image: event.image?.trim() || fallbackEventImage,
+			description: event.description?.trim() ?? "",
+			location: event.location?.trim() ?? "",
+			city,
+			venue,
+			locationSummary: summary,
+			locationDetail: [venue, city].filter(Boolean).join(" · "),
+			dateObj,
+			dayLabel: dateObj ? String(dateObj.getDate()).padStart(2, "0") : "--",
+			monthLabel: formatMonthShort(dateObj) ?? "",
+			longDate,
+			shortDate,
+			timeLabel,
+		};
+	})
+	.sort((a, b) => {
+		const aTime = a.dateObj?.getTime();
+		const bTime = b.dateObj?.getTime();
+
+		if (typeof aTime === "number" && typeof bTime === "number") {
+			return aTime - bTime;
+		}
+		if (typeof aTime === "number") return -1;
+		if (typeof bTime === "number") return 1;
+		return a.title.localeCompare(b.title);
+	});
+
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+const upcomingEvents = agendaEvents.filter((event) => {
+	const timestamp = event.dateObj?.getTime();
+	return typeof timestamp === "number" && timestamp >= today.getTime();
+});
+
+const nextAgendaEvent = upcomingEvents[0] ?? agendaEvents[0] ?? null;
+
+const heroNextEventText = nextAgendaEvent
+	? buildHeroLine(nextAgendaEvent)
+	: "Consulta la agenda para conocer la próxima fecha confirmada.";
+
+function buildHeroLine(event: (typeof agendaEvents)[number]) {
+	const details = [
+		event.shortDate,
+		event.timeLabel,
+		event.locationDetail || event.locationSummary || event.city || event.venue,
+	].filter(Boolean);
+
+	return details.length ? `${event.title} · ${details.join(" · ")}` : event.title;
+}
+
+const platformIconSrc: Record<string, string> = {
+	Spotify: "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/svgs/brands/spotify.svg",
+	"Apple Music": "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/svgs/brands/apple.svg",
+	default: "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/svgs/solid/music.svg",
+};
+
+const contactHighlights = [
+	"Contratación de conciertos y festivales",
+	"Masterclasses y residencias artísticas",
+	"Solicitudes de prensa y entrevistas",
+];
+
+const contactIconSrc: Record<string, string> = {
+	gmail: "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/svgs/solid/envelope.svg",
+	whatsapp: "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/svgs/brands/whatsapp.svg",
+	instagram: "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/svgs/brands/instagram.svg",
+	default: "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/svgs/solid/address-book.svg",
+};
+
+const contactMethods = [
+	{
+		label: "Email",
+		value: "management@antonioreyflamenco.com",
+		href: "mailto:management@antonioreyflamenco.com",
+		icon: "gmail",
+	},
+	{
+		label: "WhatsApp",
+		value: "+34 600 000 000",
+		href: "https://wa.me/34600000000",
+		icon: "whatsapp",
+	},
+	{
+		label: "Instagram",
+		value: "@antonioreyflamenco",
+		href: "https://www.instagram.com/antonioreyflamenco",
+		icon: "instagram",
+	},
+];
 
 ---
 
-<html lang="en">
+<html lang="es">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link
+			rel="icon"
+			type="image/png"
+			href="https://expoflamenco.com/wp-content/uploads/2024/08/favicon-75x75.png"
+		/>
 		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<meta name="generator" content="Víctor Moya, Expoflamenco" />
+		<title>Antonio Rey | Guitarrista Flamenco</title>
+		<meta
+			name="description"
+			content="Sitio oficial del guitarrista flamenco Antonio Rey. Biografía, agenda, premios y discografía del ganador del Latin GRAMMY 2020."
+		/>
+		<style>
+			:root {
+				color-scheme: light;
+				--bg: #ffffff;
+				--bg-muted: #f3f3f3;
+				--text: #141312;
+				--muted: #5a5a58;
+				--accent: #b1212b;
+				--accent-dark: #7f181f;
+				--border: #e3e3e3;
+				--font-sans: "Helvetica Neue", "Segoe UI", system-ui, -apple-system, sans-serif;
+				--font-serif: "Georgia", "Times New Roman", serif;
+			}
+
+			* {
+				box-sizing: border-box;
+				scroll-behavior: smooth;
+			}
+
+			body {
+				margin: 0;
+				font-family: var(--font-sans);
+				background: var(--bg);
+				color: var(--text);
+				line-height: 1.7;
+				scroll-behavior: smooth;
+			}
+
+			a {
+				color: inherit;
+				text-decoration: none;
+			}
+
+			.sr-only {
+				position: absolute;
+				width: 1px;
+				height: 1px;
+				padding: 0;
+				margin: -1px;
+				overflow: hidden;
+				clip: rect(0, 0, 0, 0);
+				white-space: nowrap;
+				border: 0;
+			}
+
+			img {
+				display: block;
+				max-width: 100%;
+				height: auto;
+				border-radius: 12px;
+			}
+
+			header {
+				padding: 1.5rem 0 3.5rem;
+				border-bottom: 1px solid var(--border);
+				background: var(--bg);
+			}
+
+			.container {
+				width: min(1120px, 90vw);
+				margin: 0 auto;
+			}
+
+			.top-bar {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 1.5rem;
+				flex-wrap: wrap;
+			}
+
+			.brand {
+				font-family: var(--font-serif);
+				font-size: 1.35rem;
+				font-weight: 600;
+				letter-spacing: 0.06em;
+				text-transform: uppercase;
+			}
+
+			nav ul {
+				display: flex;
+				gap: clamp(1rem, 3vw, 2.4rem);
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				font-size: 0.95rem;
+				color: var(--muted);
+			}
+
+			nav a {
+				padding-bottom: 0.35rem;
+				border-bottom: 2px solid transparent;
+				transition: border-color 160ms ease, color 160ms ease;
+			}
+
+			nav a:hover,
+			nav a:focus-visible {
+				border-color: var(--accent);
+				color: var(--accent-dark);
+			}
+
+			.hero {
+				display: grid;
+				grid-template-columns: minmax(0, 520px) minmax(0, 1fr);
+				gap: clamp(2rem, 6vw, 4.5rem);
+				align-items: center;
+				padding-top: clamp(2.5rem, 6vw, 4rem);
+			}
+
+			.hero-body {
+				display: grid;
+				gap: 1.5rem;
+			}
+
+			.hero-kicker {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.6rem;
+				font-size: 0.85rem;
+				letter-spacing: 0.14em;
+				text-transform: uppercase;
+				color: var(--accent);
+			}
+
+			.hero-kicker::before {
+				content: "";
+				width: 32px;
+				height: 2px;
+				background: var(--accent);
+			}
+
+			h1 {
+				margin: 0;
+				font-family: var(--font-serif);
+				font-size: clamp(3.2rem, 7vw, 4.8rem);
+				line-height: 1.05;
+				font-weight: 600;
+			}
+
+			.hero-body p {
+				margin: 0;
+				max-width: 52ch;
+				font-size: 1.05rem;
+				color: var(--muted);
+			}
+
+		.hero-image {
+			position: relative;
+			margin: 0;
+			border-radius: 16px;
+			overflow: hidden;
+			min-height: clamp(22rem, 55vw, 32rem);
+			box-shadow: 0 28px 68px rgba(0, 0, 0, 0.18);
+		}
+
+		.hero-image img {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			transform: scale(1.02);
+		}
+
+			.hero-image figcaption {
+				position: absolute;
+				left: 1.4rem;
+				bottom: 1.2rem;
+				padding: 0.45rem 0.75rem;
+				background: rgba(20, 19, 18, 0.55);
+				color: #f6f6f6;
+				font-size: 0.86rem;
+				border-radius: 999px;
+				backdrop-filter: blur(6px);
+			}
+
+			.hero-milestones {
+				display: grid;
+				gap: 1.2rem;
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				font-size: 0.95rem;
+			}
+
+			.hero-milestones li {
+				display: grid;
+				gap: 0.45rem;
+				border-left: 2px solid var(--border);
+				padding: 0.4rem 0 0.4rem 1.2rem;
+			}
+
+			.hero-milestones strong {
+				font-size: 0.82rem;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				font-weight: 600;
+				color: var(--accent);
+			}
+
+			.hero-milestones span {
+				color: var(--muted);
+			}
+
+			.hero-milestones a {
+				color: var(--accent-dark);
+				text-decoration: underline;
+				text-decoration-thickness: 1px;
+			}
+
+			.hero-actions {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 1rem;
+			}
+
+			.button {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				padding: 0.75rem 1.6rem;
+				font-weight: 600;
+				font-size: 0.95rem;
+				border-radius: 4px;
+				border: 1px solid var(--accent);
+				color: var(--accent-dark);
+				background: transparent;
+				transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+			}
+
+			.button-primary {
+				background: var(--accent);
+				color: #fffdfd;
+				border-color: transparent;
+			}
+
+			.button-primary:hover,
+			.button-primary:focus-visible {
+				background: var(--accent-dark);
+			}
+
+			main {
+				padding-bottom: 4rem;
+			}
+
+			section {
+				padding: clamp(3rem, 8vw, 4.6rem) 0;
+			}
+
+			.section-header {
+				margin-bottom: clamp(1.5rem, 4vw, 2rem);
+			}
+
+			.section-header h2 {
+				margin: 0;
+				font-family: var(--font-serif);
+				font-size: clamp(2.2rem, 5vw, 3rem);
+			}
+
+			.section-header p {
+				margin: 0.6rem 0 0;
+				max-width: 58ch;
+				color: var(--muted);
+			}
+ 
+			.agenda-layout {
+				display: grid;
+				gap: clamp(2rem, 5vw, 3rem);
+			}
+
+			.agenda-intro {
+				display: grid;
+				gap: clamp(1rem, 3vw, 1.6rem);
+				padding: clamp(1.8rem, 4vw, 2.4rem);
+				border-radius: 22px;
+				border: 1px solid rgba(177, 33, 43, 0.22);
+				background: linear-gradient(135deg, rgba(177, 33, 43, 0.08), rgba(177, 33, 43, 0.02));
+			}
+
+			.agenda-note {
+				margin: 0;
+				color: var(--muted);
+				line-height: 1.6;
+				max-width: 65ch;
+			}
+
+			.agenda-actions {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.8rem;
+				align-items: center;
+			}
+
+			.agenda-actions .button {
+				border-color: rgba(177, 33, 43, 0.22);
+				background: rgba(177, 33, 43, 0.08);
+				color: var(--accent-dark);
+			}
+
+			.agenda-actions .button-primary {
+				background: var(--accent);
+				color: #fff;
+				border-color: transparent;
+			}
+
+			.agenda-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+				gap: clamp(1.4rem, 3vw, 2.4rem);
+			}
+
+			.agenda-card {
+				display: flex;
+				flex-direction: column;
+				background: #fff;
+				border-radius: 24px;
+				overflow: hidden;
+				min-height: 100%;
+				border: 1px solid rgba(20, 19, 18, 0.08);
+				box-shadow: 0 24px 40px rgba(20, 19, 18, 0.12);
+				transition: transform 160ms ease, box-shadow 160ms ease;
+			}
+
+			.agenda-card:hover,
+			.agenda-card:focus-within {
+				transform: translateY(-6px);
+				box-shadow: 0 30px 50px rgba(20, 19, 18, 0.16);
+			}
+
+			.agenda-card-media {
+				position: relative;
+				aspect-ratio: 4 / 3;
+				overflow: hidden;
+				margin: 0;
+			}
+
+			.agenda-card-media img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				border-radius: 0;
+			}
+
+			.agenda-card-date {
+				position: absolute;
+				bottom: 16px;
+				left: 16px;
+				display: inline-flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 0.1rem;
+				padding: 0.45rem 0.8rem;
+				border-radius: 14px;
+				background: rgba(0, 0, 0, 0.75);
+				color: #fff;
+				font-weight: 600;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
+			}
+
+			.agenda-card-day {
+				font-size: 1.35rem;
+				line-height: 1;
+			}
+
+			.agenda-card-month {
+				font-size: 0.78rem;
+				line-height: 1;
+			}
+
+			.agenda-card-content {
+				display: grid;
+				gap: 0.75rem;
+				padding: clamp(1.6rem, 4vw, 2rem);
+			}
+
+			.agenda-card-city {
+				margin: 0;
+				font-size: 0.86rem;
+				text-transform: uppercase;
+				letter-spacing: 0.1em;
+				color: var(--accent-dark);
+				font-weight: 600;
+			}
+
+			.agenda-card-title {
+				margin: 0;
+				font-family: var(--font-serif);
+				font-size: clamp(1.35rem, 3vw, 1.7rem);
+				line-height: 1.25;
+			}
+
+			.agenda-card-meta {
+				margin: 0;
+				color: var(--muted);
+				font-size: 0.95rem;
+			}
+
+			.agenda-card-description {
+				margin: 0;
+				color: var(--text);
+				font-size: 0.98rem;
+			}
+
+			.agenda-empty {
+				border-radius: 20px;
+				border: 1px dashed rgba(177, 33, 43, 0.32);
+				padding: clamp(1.7rem, 4.6vw, 2.4rem);
+				color: var(--muted);
+				background: rgba(177, 33, 43, 0.04);
+				font-size: 0.96rem;
+				text-align: center;
+			}
+
+			@media (min-width: 720px) {
+				.agenda-intro {
+					grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+					align-items: center;
+				}
+
+				.agenda-actions {
+					justify-content: flex-end;
+				}
+			}
+
+			.bio-layout {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+				gap: clamp(2rem, 6vw, 3.5rem);
+				align-items: start;
+			}
+
+		.bio-text {
+			display: grid;
+			gap: 1.2rem;
+		}
+
+		.bio-text p {
+			margin: 0;
+			color: var(--text);
+			text-align: justify;
+		}
+
+		.bio-text-toggle {
+			display: inline-flex;
+			gap: 0.5rem;
+			align-items: center;
+		}
+
+		.bio-text-toggle button {
+			border: 1px solid rgba(177, 33, 43, 0.35);
+			background: rgba(177, 33, 43, 0.08);
+			color: var(--accent-dark);
+			padding: 0.45rem 0.9rem;
+			border-radius: 999px;
+			font-weight: 600;
+			font-size: 0.78rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			cursor: pointer;
+			transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+		}
+
+		.bio-text-toggle button[aria-pressed="true"] {
+			background: var(--accent);
+			border-color: var(--accent);
+			color: #fff;
+		}
+
+		.bio-text-content {
+			display: grid;
+			gap: 1.2rem;
+		}
+
+		.bio-text-content[hidden] {
+			display: none;
+		}
+
+		.bio-media {
+			position: relative;
+			border: 1px solid var(--border);
+			border-radius: 16px;
+			overflow: hidden;
+			min-height: clamp(24rem, 48vw, 32rem);
+			background: var(--bg-muted);
+			box-shadow: 0 28px 60px rgba(0, 0, 0, 0.14);
+		}
+
+		.bio-media img {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			transform: scale(1.02);
+		}
+
+		.bio-text-toggle {
+			display: inline-flex;
+			gap: 0.5rem;
+			align-items: center;
+		}
+
+		.bio-text-toggle button {
+			border: 1px solid rgba(177, 33, 43, 0.35);
+			background: rgba(177, 33, 43, 0.08);
+			color: var(--accent-dark);
+			padding: 0.45rem 0.9rem;
+			border-radius: 999px;
+			font-weight: 600;
+			font-size: 0.78rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			cursor: pointer;
+			transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+		}
+
+		.bio-text-toggle button[aria-pressed="true"] {
+			background: var(--accent);
+			border-color: var(--accent);
+			color: #fff;
+		}
+
+		.bio-text-content {
+			display: grid;
+			gap: 1.2rem;
+		}
+
+			.bio-caption {
+				position: absolute;
+				left: 1.2rem;
+				bottom: 1rem;
+				padding: 0.35rem 0.7rem;
+				border-radius: 999px;
+				background: rgba(20, 19, 18, 0.55);
+				color: #f6f6f6;
+				font-size: 0.84rem;
+				letter-spacing: 0.04em;
+				backdrop-filter: blur(6px);
+			}
+
+			.timeline {
+				list-style: none;
+				margin: 2.2rem 0 0;
+				padding: 0;
+				border-left: 1px solid var(--border);
+			}
+
+			.timeline li {
+				padding: 0 0 1.8rem 1.4rem;
+				position: relative;
+			}
+
+			.timeline li::before {
+				content: "";
+				position: absolute;
+				left: -7px;
+				top: 0.35rem;
+				width: 12px;
+				height: 12px;
+				border-radius: 50%;
+				background: var(--accent);
+			}
+
+			.timeline-year {
+				display: block;
+				font-size: 0.82rem;
+				font-weight: 600;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				color: var(--accent);
+			}
+
+			.timeline h3 {
+				margin: 0.35rem 0;
+				font-family: var(--font-serif);
+				font-size: 1.4rem;
+			}
+
+			.timeline p {
+				margin: 0;
+				color: var(--muted);
+			}
+
+			.awards-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+				gap: clamp(1.6rem, 4vw, 2.4rem);
+				margin-top: 2.2rem;
+			}
+
+			.award-card {
+				display: grid;
+				grid-template-rows: auto 1fr;
+				background: var(--bg);
+				border: 1px solid var(--border);
+				border-radius: 20px;
+				padding: 1.2rem;
+				box-shadow: 0 28px 60px rgba(0, 0, 0, 0.08);
+			}
+
+			.award-card img {
+				width: 100%;
+				height: 220px;
+				object-fit: cover;
+				border-radius: 16px;
+				box-shadow: 0 18px 36px rgba(0, 0, 0, 0.12);
+			}
+
+			.award-content {
+				padding: 1.2rem 0 0;
+				display: grid;
+				gap: 0.55rem;
+				text-align: center;
+			}
+
+			.award-year {
+				font-size: 0.8rem;
+				font-weight: 600;
+				letter-spacing: 0.12em;
+				text-transform: uppercase;
+				color: var(--accent);
+				justify-self: center;
+			}
+
+			.award-title {
+				font-family: var(--font-serif);
+				font-size: 1.2rem;
+				margin: 0;
+				color: var(--text);
+			}
+
+			.award-description {
+				margin: 0;
+				color: var(--muted);
+				font-size: 0.95rem;
+			}
+
+			.discography-timeline {
+				--timeline-offset: clamp(52px, 8vw, 72px);
+				position: relative;
+				margin: clamp(2.2rem, 6vw, 3rem) 0 0;
+				padding: 0;
+				list-style: none;
+				display: grid;
+				gap: clamp(2.2rem, 6vw, 3.4rem);
+			}
+
+			.discography-timeline::before {
+				content: "";
+				position: absolute;
+				left: var(--timeline-offset);
+				top: 0;
+				bottom: 0;
+				width: 1px;
+				background: var(--border);
+			}
+
+			.album-entry {
+				position: relative;
+				display: grid;
+				grid-template-columns: clamp(110px, 10vw, 140px) clamp(140px, 20vw, 200px) minmax(0, 1fr);
+				gap: clamp(1rem, 4vw, 2.4rem);
+				align-items: center;
+				padding-left: calc(var(--timeline-offset) + clamp(0.8rem, 2.5vw, 2rem));
+			}
+
+			.album-entry::before {
+				content: "";
+				position: absolute;
+				left: var(--timeline-offset);
+				top: 0;
+				width: 9px;
+				height: 9px;
+				border-radius: 50%;
+				background: var(--accent);
+				transform: translate(-50%, 0);
+			}
+
+			.album-entry-year {
+				font-family: var(--font-serif);
+				font-size: clamp(2.2rem, 6vw, 3rem);
+				line-height: 1;
+				color: var(--accent);
+			}
+
+			.album-entry-cover {
+				position: relative;
+				margin: 0;
+				border-radius: 12px;
+				overflow: hidden;
+				box-shadow: 0 22px 54px rgba(0, 0, 0, 0.16);
+				aspect-ratio: 1 / 1;
+				width: clamp(140px, 20vw, 200px);
+			}
+
+			.album-entry-cover img {
+				display: block;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+
+			.album-entry-cover figcaption {
+				position: absolute;
+				left: 0.85rem;
+				bottom: 0.8rem;
+				padding: 0.25rem 0.65rem;
+				border-radius: 999px;
+				background: rgba(20, 19, 18, 0.7);
+				color: #f4f4f4;
+				font-size: 0.75rem;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+			}
+
+			.album-entry-body {
+				display: grid;
+				gap: 0.9rem;
+			}
+
+			.album-entry-title {
+				margin: 0;
+				font-family: var(--font-serif);
+				font-size: clamp(1.6rem, 4vw, 2.2rem);
+			}
+
+			.album-entry-description {
+				margin: 0;
+				color: var(--text);
+				font-size: 0.98rem;
+			}
+
+			.album-entry-highlights {
+				margin: 0;
+				list-style: none;
+				padding: 0;
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.55rem;
+			}
+
+			.album-entry-highlights li {
+				padding: 0.35rem 0.75rem;
+				border-radius: 999px;
+				background: var(--bg-muted);
+				color: var(--muted);
+				font-size: 0.84rem;
+			}
+
+			.album-entry-links {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.85rem;
+				font-size: 0.9rem;
+			}
+
+			.album-entry-links a {
+				color: var(--accent-dark);
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				width: 2.4rem;
+				height: 2.4rem;
+				border-radius: 50%;
+				border: 1px solid var(--border);
+				background: var(--bg);
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+				transition: transform 160ms ease, box-shadow 160ms ease;
+			}
+
+			.album-entry-links a:hover,
+			.album-entry-links a:focus-visible {
+				transform: translateY(-2px);
+				box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+			}
+
+			.platform-icon {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				width: 1.2rem;
+				height: 1.2rem;
+			}
+
+			.platform-icon img {
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+			}
+
+			.platform-icon img {
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+							}
+
+			.contact-panel {
+				margin-top: 2.6rem;
+				padding: clamp(2rem, 6vw, 3.2rem);
+				border: 1px solid var(--border);
+				border-radius: 24px;
+				background: linear-gradient(140deg, rgba(180, 31, 44, 0.05), rgba(255, 255, 255, 0.8));
+				display: grid;
+				gap: clamp(1.8rem, 5vw, 2.8rem);
+				grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+				align-items: start;
+			}
+
+			.contact-intro {
+				display: grid;
+				gap: 1rem;
+			}
+
+			.contact-intro h3 {
+				margin: 0;
+				font-family: var(--font-serif);
+				font-size: clamp(1.6rem, 4vw, 2.1rem);
+			}
+
+			.contact-intro p {
+				margin: 0;
+				color: var(--muted);
+			}
+
+			.contact-tags {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.6rem;
+			}
+
+			.contact-tags li {
+				padding: 0.4rem 0.8rem;
+				border-radius: 999px;
+				border: 1px solid var(--border);
+				background: rgba(255, 255, 255, 0.6);
+				color: var(--muted);
+				font-size: 0.85rem;
+			}
+
+			.contact-methods {
+				display: grid;
+				gap: 0.85rem;
+			}
+
+			.contact-method {
+				display: flex;
+				align-items: center;
+				gap: 0.85rem;
+				padding: 0.9rem 1.1rem;
+				border-radius: 16px;
+				background: var(--bg);
+				border: 1px solid var(--border);
+				box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+				transition: transform 160ms ease, box-shadow 160ms ease;
+				color: var(--text);
+			}
+
+			.contact-method:hover,
+			.contact-method:focus-visible {
+				transform: translateY(-2px);
+				box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+			}
+
+			.contact-method-icon {
+				width: 2.4rem;
+				height: 2.4rem;
+				border-radius: 40%;
+				background: var(--bg-muted);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.contact-method-icon img {
+				width: 1.2rem;
+				height: 1.2rem;
+				object-fit: contain;
+							}
+
+			.contact-method-text {
+				display: grid;
+				gap: 0.1rem;
+			}
+
+			.contact-method-label {
+				font-size: 0.75rem;
+				letter-spacing: 0.12em;
+				text-transform: uppercase;
+				color: var(--muted);
+			}
+
+			.contact-method-value {
+				font-weight: 600;
+				color: var(--text);
+			}
+
+		footer {
+			border-top: 1px solid var(--border);
+			padding: 3rem 0 3.4rem;
+			color: var(--muted);
+			font-size: 0.92rem;
+			background: var(--bg);
+		}
+
+			footer .container {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				flex-wrap: wrap;
+				gap: 1rem;
+			}
+
+			footer a {
+				color: var(--accent-dark);
+			}
+
+			@media (max-width: 960px) {
+				.hero {
+					grid-template-columns: 1fr;
+				}
+
+				.agenda-grid {
+					grid-template-columns: 1fr;
+				}
+
+				.agenda-actions {
+					justify-content: flex-start;
+				}
+
+				.hero-image img {
+					width: 100%;
+				}
+			}
+
+			@media (max-width: 640px) {
+				.discography-timeline {
+					--timeline-offset: 0px;
+				}
+
+				.agenda-intro {
+					padding: 1.6rem;
+				}
+
+				.agenda-actions {
+					flex-direction: column;
+					align-items: stretch;
+				}
+
+				.agenda-actions .button,
+				.agenda-actions .button-primary {
+					width: 100%;
+					justify-content: center;
+				}
+
+				.agenda-card-media {
+					aspect-ratio: 3 / 2;
+				}
+
+				nav ul {
+					width: 100%;
+					justify-content: space-between;
+					gap: 1rem;
+				}
+
+				.album-entry {
+					grid-template-columns: 90px 120px 1fr;
+					padding-left: clamp(1rem, 4vw, 1.6rem);
+				}
+
+				.album-entry-cover {
+					width: 100%;
+				}
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				*,
+				*:before,
+				*:after {
+					animation-duration: 0.01ms !important;
+					animation-iteration-count: 1 !important;
+					transition-duration: 0.01ms !important;
+					scroll-behavior: auto !important;
+				}
+
+				.bio-slide {
+					animation: none !important;
+					opacity: 0 !important;
+					transform: none !important;
+				}
+
+				.bio-slide:first-of-type {
+					opacity: 1 !important;
+				}
+			}
+		</style>
 	</head>
 	<body>
-		<h1>Astro</h1>
-	</body>
+		<header id="inicio">
+			<div class="container">
+				<div class="top-bar">
+					<a class="brand" href="#inicio">Antonio Rey</a>
+					<nav aria-label="Navegación principal">
+						<ul>
+							<li><a href="#biografia">Biografía</a></li>
+							<li><a href="#agenda">Agenda</a></li>
+							<li><a href="#trayectoria">Trayectoria</a></li>
+							<li><a href="#reconocimientos">Premios</a></li>
+							<li><a href="#discografia">Discografía</a></li>
+							<li><a href="#contacto">Contacto</a></li>
+						</ul>
+					</nav>
+				</div>
+
+				<div class="hero">
+					<div class="hero-body">
+						<span class="hero-kicker">Ganador Latin GRAMMY 2020 y 2024</span>
+						<h1>Antonio Rey</h1>
+						<p style="text-align: justify;">
+							Guitarrista y compositor flamenco cuyo toque fusiona lirismo andaluz, armonías modernas y
+							cuatro décadas de tradición familiar llevadas a escenarios de Europa, América y Asia.
+						</p>
+						<ul class="hero-milestones">
+							<li>
+								<strong>Nuevo álbum</strong>
+								<span>
+									“Flamenco sin fronteras” · Latin GRAMMY Mejor Álbum de Flamenco ·
+									<a
+										href="https://open.spotify.com/search/Antonio%20Rey%20Flamenco%20sin%20fronteras"
+										target="_blank"
+										rel="noreferrer"
+										>Spotify</a
+									>
+									·
+									<a
+										href="https://music.apple.com/es/search?term=Antonio%20Rey%20Flamenco%20sin%20fronteras"
+										target="_blank"
+										rel="noreferrer"
+										>Apple Music</a
+									>
+								</span>
+							</li>
+							<li>
+								<strong>Próximo concierto</strong>
+								<span id="hero-next-event-text">{heroNextEventText}</span>
+							</li>
+							<li>
+								<strong>Masterclass</strong>
+								<span>Academia de Guitarra de Madrid · 21 de junio</span>
+							</li>
+						</ul>
+						
+					</div>
+					<figure class="hero-image">
+						<img src={heroImage} alt={heroImageAlt} loading="eager" decoding="async" />
+						<figcaption>Antonio Rey en directo · Fotografía oficial</figcaption>
+					</figure>
+				</div>
+			</div>
+		</header>
+
+		<main>
+			<section id="agenda" aria-labelledby="agenda-heading">
+				<div class="container">
+					<div class="section-header">
+						<h2 id="agenda-heading">Agenda</h2>
+						<p>Próximas actuaciones confirmadas y fechas recientes de Antonio Rey.</p>
+					</div>
+					<div class="agenda-layout">
+						<div class="agenda-intro">
+							<p class="agenda-note">
+								Las fechas pueden ajustarse según la disponibilidad. Escríbenos para coordinar
+								conciertos, festivales, grabaciones o masterclasses personalizadas.
+							</p>
+							<div class="agenda-actions">
+								<a class="button button-primary" href="#contacto">Solicitar disponibilidad</a>
+								
+							</div>
+						</div>
+						{agendaEvents.length ? (
+							<div class="agenda-grid" role="list">
+								{agendaEvents.map((event) => (
+									<article class="agenda-card" role="listitem">
+										<figure class="agenda-card-media">
+											<img
+												src={event.image}
+												alt={`Cartel promocional de ${event.title}`}
+												loading="lazy"
+												decoding="async"
+											/>
+											<span class="agenda-card-date">
+												<span class="agenda-card-day">{event.dayLabel}</span>
+												<span class="agenda-card-month">{event.monthLabel}</span>
+											</span>
+										</figure>
+										<div class="agenda-card-content">
+											<p class="agenda-card-city">
+												{event.locationSummary || event.city || event.venue || "Ubicación por confirmar"}
+											</p>
+											<h3 class="agenda-card-title">{event.title}</h3>
+											{event.locationDetail && event.locationDetail !== event.locationSummary ? (
+												<p class="agenda-card-meta">{event.locationDetail}</p>
+											) : null}
+											<p class="agenda-card-meta">
+												{event.longDate}
+												{event.timeLabel ? ` · ${event.timeLabel}` : ""}
+											</p>
+											{event.description ? (
+												<p class="agenda-card-description">{event.description}</p>
+											) : null}
+										</div>
+									</article>
+								))}
+							</div>
+						) : (
+							<div class="agenda-empty">
+								<p>No hay fechas públicas confirmadas por ahora. Escríbenos para recibir información personalizada.</p>
+							</div>
+						)}
+					</div>
+				</div>
+			</section>
+			<section id="biografia" aria-labelledby="biografia-heading">
+				<div class="container">
+					<div class="section-header">
+						<h2 id="biografia-heading">Biografía</h2>
+					</div>
+		<div class="bio-layout">
+			<div class="bio-text">
+				<div class="bio-text-toggle" role="group" aria-label="Cambiar idioma biografía">
+					<button type="button" id="bio-toggle-es" aria-pressed="true">ESPAÑOL</button>
+					<button type="button" id="bio-toggle-en" aria-pressed="false">ENGLISH</button>
+				</div>
+				<div class="bio-text-content" id="bio-text-es">
+					<p>
+						Antonio Rey Navas nace en Madrid en 1981, y comienza su carrera artística a la temprana edad
+						de diez años cuando acompaña a su padre Tony Rey en diversos tablaos de México. Pocos años
+						después, es reclamado por la bailarina Yoko Komatsubara para realizar la que sería su primera
+						gira por Japón.
+					</p>
+							<p>
+								A los dieciocho años entra a formar parte de la Compañía de Antonio Canales y, posteriormente,
+								compone la música del espectáculo «Gallo de pelea» del Nuevo Ballet Español. El guitarrista
+								madrileño continúa actualmente con esta Compañía fundada en 1996 por Ángel Rojas y Carlos
+								Rodríguez, para la que ha firmado otras composiciones como «Romeo y Julieta».
+							</p>
+							<p>
+								Su último gran triunfo ha sido la obtención del Primer Premio del Concurso de Guitarra «Bordón
+								Minero» en el prestigioso Festival Internacional del Cante de Las Minas (La Unión) en 2003. También
+								cuenta con los galardones Primer Premio del Concurso Nacional de Córdoba, 1er Premio Niño Ricardo y
+								Premio Giraldillo al Mejor Concertista.
+							</p>
+							<p>
+								En 2004 colaboró como artista invitado en el grupo de Paco de Lucía, y más tarde fue director y
+								compositor de la obra de Carlos Saura “Flamenco Hoy” y de distintas producciones de la Compañía
+								Farruquito.
+							</p>
+					<p>
+						Publica su cuarto trabajo discográfico, <em>Dos Partes de Mí</em>, en 2017, con colaboraciones de Richard
+						Bona, Diego el Cigala y Farruquito. Su siguiente álbum, <em>Flamenco sin Fronteras</em>, reúne a Pablo
+						Alborán y El Barrio y se alza con el Grammy Latino al mejor disco flamenco en 2020. Ese mismo año,
+						por iniciativa de Gerardo Núñez, recibe el premio Giraldillo al mejor concierto de guitarra en la Bienal
+						de Flamenco de Sevilla.
+					</p>
+				</div>
+				<div class="bio-text-content" id="bio-text-en" hidden>
+					<p>
+						Antonio Rey is the greatest flamenco art guitarist of today, backed by awards in the most important flamenco competitions,
+						being the 2010 National Guitar Prize, as was previously won by Paco de Lucía, Vicente Amigo or Paco Peña. Facts that made
+						Gerardo Núñez notice the young guitarist, producing his first album “A través de ti”.
+					</p>
+					<p>
+						We are not only dealing with a virtuoso. Antonio Rey is also an original, different, inspired and surprising guitarist, as demonstrated
+						in his album for EMI Music, “Colores del Fuego” (2011).
+					</p>
+					<p>
+						He has collaborated with great musicians and artists, such as Estrella Morente, Tommy Emmanuel, Vicente Amigo, Nishat Kahn,
+						Manuela Carrasco, Farruquito or Rafael Amargo. He has appeared at Festivals and venues such as the New York City Centre, Montreal
+						International Jazz Festival, Madrid Jazz Festival, Monterrey Flamenco Festival, Moscow Performing Arts Center, Nimes Flamenco Festival,
+						Barcelona Jazz Festival, Mont de Marsan Flamenco Festival, Jerez Flamenco Festival or Seville Flamenco Biennial.
+					</p>
+					<p>
+						Antonio shared the stage with Paco de Lucía on numerous occasions and from whom he takes the lead of the great flamenco guitar.
+					</p>
+					<p>
+						He published the album “Camino al Alma” in May 2013. In <em>Arco de Santiago</em>, fast-paced bulerías brimming with virtuosity and originality,
+						Antonio Rey has the collaboration of singer Diego El Cigala as well as contributions from Miguel Poveda, Josemi Carmona and Chaboli.
+						Recorded in the flamenco neighborhood of Santiago, in Jerez de la Frontera, Antonio Rey's third album represents a new evolution
+						towards musical maturity.
+					</p>
+					<p>
+						After the disappearance of maestro Paco de Lucía, Antonio Rey formed a quartet to which the gypsy dancer “Farru” joined to pay tribute to the great maestro in places such as the Philharmonie Theater in Paris.
+					</p>
+					<p>
+						“Dos Partes de Mí” was released in 2017, and refers to his flamenco origin and his parallel destiny as a universal musician. On this
+						album, he not only brought together colleagues and countrymen, but also featured the stellar collaboration of Cameroonian Richard Bona.
+						Antonio Rey is an artist who has brought flamenco art to the whole world and has been influenced by this universal contact.
+					</p>
+					<p>
+						In addition to honoring his great inspirations Paco, Vicente, Riqueni and Moraíto Chico, “Dos Partes de Mí” captured, in flamenco language,
+						the subtle beauty of the bolero, in which we are caressed by the crying of Bernardo Parrilla's strings and the unmistakable quejío by Diego el Cigala.
+						The “morao” spirit is present in the Soleá. The joy of love also finds a place in the Rumba that he dedicates to “Mi Luisa.”
+					</p>
+					<p>
+						The unusual sound world of Antonio Rey is a place where the rigidity of the Jonda tradition and the expressive ease of jazz meet, where
+						Andalusia and Africa embrace each other, where a picado tears our soul while a falseta soothes the heart, where the tones blur and then
+						come to light, where harmony and compass coexist, where freedom reigns.
+					</p>
+					<p>
+						In 2019 he collaborated with El Barrio, Pablo Alborán, Diego el Cigala and Richard Bona in the “Bona de la Frontera” tour concert. He recorded the live DVD
+						<em>Dos Partes de Mí</em> at the Palau de la Música Catalana during the Maestros de la Guitarra cycle. He published his fourth album “Dos Partes de Mi” in 2017,
+						with collaborations such as Richard Bona, Diego el Cigala and Farruquito.
+					</p>
+					<p>
+						His next album “Flamenco sin Fronteras”, in which Pablo Alborán and El Barrio collaborated, won the Latin Grammy for best flamenco album in 2020.
+						He was also awarded, at the initiative of Gerardo Núñez, the Giraldillo award for the best guitar concert in the Seville Flamenco Biennial 2020.
+					</p>
+					<p>
+						In 2024 he performed triumphantly at Carnegie Hall in New York along with a whole host of the greatest flamenco artists of today, including Karime Amaya,
+						Farru and Farruquito, the guitars of Al Di Meola, Josemi Carmona, Yerai Cortés, Rafael Riqueni, Niño Josele, José María Bandera and Pepe Habichuela,
+						Diego 'El Cigala', Duquende, Chonchi Heredia, Salif Keita, Carmen Linares, José Mercé, Sílvia Pérez Cruz and Makarines, among others.
+					</p>
+					<p>
+						His new album: “Historias de un Flamenco” has become the most listened to flamenco album of 2024, endorsing Antonio Rey as one of the great
+						stars of his art today.
+					</p>
+				</div>
+						</div>
+						<div class="bio-media" aria-label="Retrato de Antonio Rey">
+					<img src={bioImage} alt={bioImageAlt} loading="lazy" decoding="async" />
+					<span class="bio-caption">Archivo visual · Antonio Rey</span>
+				</div>
+					</div>
+				</div>
+			</section>
+
+			<section id="trayectoria" aria-labelledby="trayectoria-heading">
+				<div class="container">
+					<div class="section-header">
+						<h2 id="trayectoria-heading">Trayectoria escénica</h2>
+						<p>
+							Una selección de hitos recientes que resumen su presencia en festivales, colaboraciones y
+							proyectos discográficos.
+						</p>
+					</div>
+					<ol class="timeline">
+						<li>
+							<span class="timeline-year">2023</span>
+							<h3>Gira “Flamenco sin fronteras”</h3>
+							<p>
+								Presentaciones en Festival de Jerez, Flamenco Festival London y giras por Estados Unidos y
+								América Latina con Paco Vega (percusión) y Pedro Heredia “El Granaíno” como invitado.
+							</p>
+						</li>
+						<li>
+							<span class="timeline-year">2020</span>
+							<h3>Latin GRAMMY · Mejor Álbum de Flamenco</h3>
+							<p>
+								El disco “Flamenco sin fronteras” reúne colaboraciones con Estrella Morente, Diego del
+								Morao y Paquito D’Rivera, consolidando su proyección internacional.
+							</p>
+						</li>
+						<li>
+							<span class="timeline-year">2017</span>
+							<h3>“Dos partes de mí”</h3>
+							<p>
+								Grabado entre Madrid y Nueva York, combina bulerías, tangos y una suite dedicada a
+								Farruquito con Dorantes al piano como invitado.
+							</p>
+						</li>
+						<li>
+							<span class="timeline-year">2010</span>
+							<h3>Premios de guitarra</h3>
+							<p>
+								Primer Premio del Concurso Nacional de Arte Flamenco de Córdoba y Bordón Minero de La
+								Unión, reconocimientos que consolidan su liderazgo en el toque contemporáneo.
+							</p>
+						</li>
+					</ol>
+				</div>
+			</section>
+
+			<section id="reconocimientos" aria-labelledby="reconocimientos-heading">
+				<div class="container">
+					<div class="section-header">
+						<h2 id="reconocimientos-heading">Premios y distinciones</h2>
+						<p>Reconocimientos a una carrera que conjuga virtuosismo, composición y acompañamiento.</p>
+					</div>
+					<div class="awards-grid">
+						{awards.map((award) => (
+							<article class="award-card">
+								<img src={award.image} alt={award.alt} loading="lazy" decoding="async" />
+								<div class="award-content">
+									<span class="award-year">{award.year}</span>
+									<h3 class="award-title">{award.title}</h3>
+									<p class="award-description">{award.description}</p>
+								</div>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section id="discografia" aria-labelledby="discografia-heading">
+				<div class="container">
+					<div class="section-header">
+						<h2 id="discografia-heading">Discografía destacada</h2>
+						<p>Grabaciones que documentan su evolución artística y colaboración con grandes figuras.</p>
+					</div>
+					<ol class="discography-timeline">
+						{discography.map((album) => (
+							<li class="album-entry">
+								<div class="album-entry-year">{album.year}</div>
+								<figure class="album-entry-cover">
+									<img src={album.cover} alt={album.alt} loading="lazy" decoding="async" />
+									<figcaption>{album.label}</figcaption>
+								</figure>
+								<div class="album-entry-body">
+									<h3 class="album-entry-title">{album.title}</h3>
+									<p class="album-entry-description">{album.description}</p>
+									<ul class="album-entry-highlights">
+										{album.highlights.map((item) => (
+											<li>{item}</li>
+										))}
+									</ul>
+									<div class="album-entry-links">
+										{album.links.map((link) => (
+											<a
+												href={link.url}
+												target="_blank"
+												rel="noreferrer"
+												aria-label={`Abrir ${link.label}`}
+												title={link.label}
+											>
+												<span class="platform-icon" aria-hidden="true">
+													<img
+														src={platformIconSrc[link.label] ?? platformIconSrc.default}
+														alt=""
+														loading="lazy"
+														decoding="async"
+													/>
+												</span>
+												<span class="sr-only">{link.label}</span>
+											</a>
+										))}
+									</div>
+								</div>
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+
+			<section id="contacto" aria-labelledby="contacto-heading">
+				<div class="container">
+					<div class="section-header">
+						<h2 id="contacto-heading">Contacto profesional</h2>
+						<p>Gestión de conciertos, colaboraciones y entrevistas.</p>
+					</div>
+					<div class="contact-panel">
+						<div class="contact-intro">
+							<h3>Oficina de representación</h3>
+							<p>
+								Coordinamos giras internacionales, residencias y apariciones mediáticas. Escríbenos con la
+								propuesta y responderemos en menos de 24 horas laborales.
+							</p>
+							<ul class="contact-tags">
+								{contactHighlights.map((item) => (
+									<li>{item}</li>
+								))}
+							</ul>
+						</div>
+						<div class="contact-methods">
+							{contactMethods.map((method) => (
+								<a class="contact-method" href={method.href} target="_blank" rel="noreferrer">
+									<span class="contact-method-icon" aria-hidden="true">
+										<img
+											src={contactIconSrc[method.icon] ?? contactIconSrc.default}
+											alt=""
+											loading="lazy"
+											decoding="async"
+										/>
+									</span>
+									<span class="contact-method-text">
+										<span class="contact-method-label">{method.label}</span>
+										<span class="contact-method-value">{method.value}</span>
+									</span>
+								</a>
+							))}
+						</div>
+					</div>
+				</div>
+			</section>
+	</main>
+
+	<footer>
+		<div class="container">
+			<span>© {currentYear} Antonio Rey. Todos los derechos reservados.<br>Esta página web ha sido desarrollada por <a href="https://expoflamenco.com">Expoflamenco</a></span>
+			<a href="#inicio">Volver al inicio</a>
+		</div>
+	</footer>
+	<script type="module">
+		const bioToggleEs = document.querySelector("#bio-toggle-es");
+		const bioToggleEn = document.querySelector("#bio-toggle-en");
+		const bioTextEs = document.querySelector("#bio-text-es");
+		const bioTextEn = document.querySelector("#bio-text-en");
+
+		const setBioLanguage = (language) => {
+			if (!bioToggleEs || !bioToggleEn || !bioTextEs || !bioTextEn) return;
+			const isSpanish = language === "es";
+			bioToggleEs.setAttribute("aria-pressed", String(isSpanish));
+			bioToggleEn.setAttribute("aria-pressed", String(!isSpanish));
+			if (isSpanish) {
+				bioTextEs.removeAttribute("hidden");
+				bioTextEn.setAttribute("hidden", "true");
+			} else {
+				bioTextEn.removeAttribute("hidden");
+				bioTextEs.setAttribute("hidden", "true");
+			}
+		};
+
+		bioToggleEs?.addEventListener("click", () => setBioLanguage("es"));
+		bioToggleEn?.addEventListener("click", () => setBioLanguage("en"));
+		setBioLanguage("es");
+	</script>
+</body>
 </html>

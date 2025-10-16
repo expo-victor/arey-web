@@ -1,0 +1,38 @@
+[
+  {
+    "id": "sevilla-2024-11-18",
+    "title": "Concierto en Sevilla",
+    "location": "Teatro de la Maestranza, Sevilla",
+    "date": "2024-11-18",
+    "time": "21:00",
+    "description": "Presentación de \"Historias de un Flamenco\" con invitados especiales.",
+    "image": "https://i0.wp.com/enfermeriacreativa.com/wp-content/uploads/2019/07/placeholder.png?ssl=1",
+    "gallery": [
+      "https://i0.wp.com/enfermeriacreativa.com/wp-content/uploads/2019/07/placeholder.png?ssl=1"
+    ]
+  },
+  {
+    "id": "madrid-2024-12-05",
+    "title": "Noche Flamenca en Madrid",
+    "location": "Teatro Real, Madrid",
+    "date": "2024-12-05",
+    "time": "20:30",
+    "description": "Recital íntimo de guitarra con repertorio clásico y composiciones recientes.",
+    "image": "https://i0.wp.com/enfermeriacreativa.com/wp-content/uploads/2019/07/placeholder.png?ssl=1",
+    "gallery": [
+      "https://i0.wp.com/enfermeriacreativa.com/wp-content/uploads/2019/07/placeholder.png?ssl=1"
+    ]
+  },
+  {
+    "id": "evento-de-prueba-2020-02-20",
+    "title": "evento de prueba",
+    "date": "2020-02-20",
+    "time": "20:20",
+    "location": "Kadiz",
+    "description": "desctest",
+    "gallery": [
+      "https://i0.wp.com/enfermeriacreativa.com/wp-content/uploads/2019/07/placeholder.png?ssl=1"
+    ],
+    "image": "https://i0.wp.com/enfermeriacreativa.com/wp-content/uploads/2019/07/placeholder.png?ssl=1"
+  }
+]
