@@ -373,18 +373,21 @@ const contactMethods = [
 				background: var(--bg);
 			}
 
-			.container {
-				width: min(1120px, 90vw);
-				margin: 0 auto;
-			}
+		.container {
+			width: min(1120px, 100%);
+			margin: 0 auto;
+			padding: 0 clamp(1rem, 4vw, 2rem);
+			box-sizing: border-box;
+		}
 
-			.top-bar {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				gap: 1.5rem;
-				flex-wrap: wrap;
-			}
+		.top-bar {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1.5rem;
+			flex-wrap: wrap;
+			position: relative;
+		}
 
 			.brand {
 				font-family: var(--font-serif);
@@ -394,15 +397,70 @@ const contactMethods = [
 				text-transform: uppercase;
 			}
 
-			nav ul {
-				display: flex;
-				gap: clamp(1rem, 3vw, 2.4rem);
-				margin: 0;
-				padding: 0;
-				list-style: none;
-				font-size: 0.95rem;
-				color: var(--muted);
-			}
+		nav ul {
+			display: flex;
+			gap: clamp(1rem, 3vw, 2.4rem);
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			font-size: 0.95rem;
+			color: var(--muted);
+		}
+
+		.nav-toggle {
+			display: none;
+			border: 1px solid var(--border);
+			background: var(--bg);
+			color: inherit;
+			width: 44px;
+			height: 44px;
+			border-radius: 10px;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+			position: absolute;
+			top: 0.35rem;
+			right: clamp(1rem, 4vw, 2rem);
+			transition: border-color 160ms ease, background 160ms ease;
+		}
+
+		.nav-toggle-bar,
+		.nav-toggle-bar::before,
+		.nav-toggle-bar::after {
+			display: block;
+			width: 18px;
+			height: 2px;
+			background: var(--text);
+			position: relative;
+			transition: transform 160ms ease, opacity 160ms ease;
+		}
+
+		.nav-toggle-bar::before,
+		.nav-toggle-bar::after {
+			content: "";
+			position: absolute;
+			left: 0;
+		}
+
+		.nav-toggle-bar::before {
+			top: -6px;
+		}
+
+		.nav-toggle-bar::after {
+			top: 6px;
+		}
+
+		.nav-toggle[aria-expanded="true"] .nav-toggle-bar {
+			background: transparent;
+		}
+
+		.nav-toggle[aria-expanded="true"] .nav-toggle-bar::before {
+			transform: translateY(6px) rotate(45deg);
+		}
+
+		.nav-toggle[aria-expanded="true"] .nav-toggle-bar::after {
+			transform: translateY(-6px) rotate(-45deg);
+		}
 
 			nav a {
 				padding-bottom: 0.35rem;
@@ -720,15 +778,37 @@ const contactMethods = [
 				font-size: 0.98rem;
 			}
 
-			.agenda-empty {
-				border-radius: 20px;
-				border: 1px dashed rgba(177, 33, 43, 0.32);
-				padding: clamp(1.7rem, 4.6vw, 2.4rem);
-				color: var(--muted);
-				background: rgba(177, 33, 43, 0.04);
-				font-size: 0.96rem;
-				text-align: center;
+		.agenda-empty {
+			border-radius: 20px;
+			border: 1px dashed rgba(177, 33, 43, 0.32);
+			padding: clamp(1.7rem, 4.6vw, 2.4rem);
+			color: var(--muted);
+			background: rgba(177, 33, 43, 0.04);
+			font-size: 0.96rem;
+			text-align: center;
+		}
+
+		@media (max-width: 720px) {
+			.bio-layout {
+				grid-template-columns: 1fr;
 			}
+
+			.contact-panel {
+				grid-template-columns: 1fr;
+			}
+
+			.timeline {
+				border-left: none;
+			}
+
+			.timeline li {
+				padding-left: 0;
+			}
+
+			.timeline li::before {
+				display: none;
+			}
+		}
 
 			@media (min-width: 720px) {
 				.agenda-intro {
@@ -1236,63 +1316,208 @@ const contactMethods = [
 				color: var(--accent-dark);
 			}
 
-			@media (max-width: 960px) {
-				.hero {
-					grid-template-columns: 1fr;
-				}
-
-				.agenda-grid {
-					grid-template-columns: 1fr;
-				}
-
-				.agenda-actions {
-					justify-content: flex-start;
-				}
-
-				.hero-image img {
-					width: 100%;
-				}
+		@media (max-width: 960px) {
+			.top-bar {
+				flex-direction: column;
+				align-items: flex-start;
+				gap: 0.75rem;
 			}
 
-			@media (max-width: 640px) {
-				.discography-timeline {
-					--timeline-offset: 0px;
-				}
-
-				.agenda-intro {
-					padding: 1.6rem;
-				}
-
-				.agenda-actions {
-					flex-direction: column;
-					align-items: stretch;
-				}
-
-				.agenda-actions .button,
-				.agenda-actions .button-primary {
-					width: 100%;
-					justify-content: center;
-				}
-
-				.agenda-card-media {
-					aspect-ratio: 3 / 2;
-				}
-
-				nav ul {
-					width: 100%;
-					justify-content: space-between;
-					gap: 1rem;
-				}
-
-				.album-entry {
-					grid-template-columns: 90px 120px 1fr;
-					padding-left: clamp(1rem, 4vw, 1.6rem);
-				}
-
-				.album-entry-cover {
-					width: 100%;
-				}
+			.nav-toggle {
+				display: inline-flex;
+				margin-left: auto;
 			}
+
+			nav {
+				width: 100%;
+				display: none;
+			}
+
+			nav.is-open {
+				display: block;
+			}
+
+			nav ul {
+				flex-direction: column;
+				align-items: flex-start;
+				gap: 0.75rem 1.25rem;
+			}
+
+			.hero {
+				grid-template-columns: 1fr;
+				padding-top: 2rem;
+			}
+
+			.hero-image {
+				min-height: clamp(18rem, 60vw, 26rem);
+			}
+
+			.agenda-layout {
+				gap: 2rem;
+			}
+
+			.agenda-grid {
+				grid-template-columns: 1fr;
+			}
+
+			.agenda-actions {
+				justify-content: flex-start;
+			}
+		}
+
+		@media (max-width: 640px) {
+			h1 {
+				font-size: clamp(2.4rem, 9vw, 3.1rem);
+			}
+
+			.hero-body {
+				align-items: center;
+				text-align: center;
+				gap: 1.2rem;
+			}
+
+			.hero-body p {
+				text-align: center;
+			}
+
+			.hero-milestones {
+				display: none;
+			}
+
+			.hero-actions {
+				justify-content: center;
+			}
+
+			.hero-image {
+				min-height: clamp(18rem, 70vw, 24rem);
+			}
+
+			nav ul {
+				flex-direction: column;
+				align-items: flex-start;
+				gap: 0.6rem;
+				padding: 0;
+			}
+
+			.agenda-intro {
+				padding: 1.6rem;
+				gap: 1.5rem;
+			}
+
+			.agenda-actions {
+				flex-direction: column;
+				align-items: stretch;
+			}
+
+			.agenda-actions .button,
+			.agenda-actions .button-primary {
+				width: 100%;
+				justify-content: center;
+			}
+
+			.agenda-card {
+				padding: 1.3rem;
+				gap: 1rem;
+				margin: 0 auto;
+				width: min(100%, 360px);
+			}
+
+			.agenda-card-media {
+				aspect-ratio: 3 / 2;
+			}
+
+			.bio-media {
+				min-height: clamp(20rem, 70vw, 26rem);
+			}
+
+			.bio-text-toggle {
+				justify-content: center;
+			}
+
+			.bio-text {
+				text-align: left;
+			}
+
+			.timeline {
+				margin-top: 1.4rem;
+			}
+
+			.discography-timeline {
+				--timeline-offset: 0px;
+			}
+
+			.album-entry {
+				grid-template-columns: 1fr;
+				text-align: center;
+				padding-left: 0;
+				gap: 1rem;
+			}
+
+			.album-entry-cover {
+				margin: 0 auto;
+			}
+
+			.award-card,
+			.contact-method,
+			.contact-intro {
+				margin: 0 auto;
+				text-align: center;
+			}
+
+			.contact-panel {
+				gap: 1.5rem;
+			}
+
+			.contact-method {
+				flex-direction: row;
+				align-items: center;
+			}
+
+			.awards-grid {
+				grid-template-columns: 1fr;
+			}
+
+			.footer .container,
+			footer .container {
+				flex-direction: column;
+				text-align: center;
+				gap: 1.4rem;
+			}
+		}
+
+		@media (max-width: 480px) {
+			.top-bar {
+				gap: 0.5rem;
+			}
+
+			.hero-actions {
+				flex-direction: column;
+				gap: 0.75rem;
+			}
+
+			.hero-actions .button,
+			.hero-actions .button-primary {
+				width: 100%;
+			}
+
+			.agenda-card {
+				padding: 1.1rem;
+			}
+
+			.agenda-card-date {
+				bottom: 12px;
+				left: 12px;
+			}
+
+			.bio-text-toggle {
+				flex-wrap: wrap;
+			}
+
+			.contact-method {
+				flex-direction: column;
+				align-items: flex-start;
+			}
+		}
 
 			@media (prefers-reduced-motion: reduce) {
 				*,
@@ -1321,7 +1546,15 @@ const contactMethods = [
 			<div class="container">
 				<div class="top-bar">
 					<a class="brand" href="#inicio">Antonio Rey</a>
-					<nav aria-label="Navegación principal">
+					<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+						<span class="nav-toggle-bar" aria-hidden="true"></span>
+						<span class="sr-only">Abrir menú</span>
+					</button>
+		<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+			<span class="nav-toggle-bar" aria-hidden="true"></span>
+			<span class="sr-only">Abrir menú</span>
+		</button>
+					<nav id="primary-nav" aria-label="Navegación principal">
 						<ul>
 							<li><a href="#biografia">Biografía</a></li>
 							<li><a href="#agenda">Agenda</a></li>
@@ -1721,10 +1954,20 @@ const contactMethods = [
 		</div>
 	</footer>
 	<script type="module">
+		const navToggle = document.querySelector(".nav-toggle");
+		const primaryNav = document.querySelector("#primary-nav");
 		const bioToggleEs = document.querySelector("#bio-toggle-es");
 		const bioToggleEn = document.querySelector("#bio-toggle-en");
 		const bioTextEs = document.querySelector("#bio-text-es");
 		const bioTextEn = document.querySelector("#bio-text-en");
+
+		const toggleNavigation = () => {
+			if (!navToggle || !primaryNav) return;
+			const expanded = navToggle.getAttribute("aria-expanded") === "true";
+			const next = !expanded;
+			navToggle.setAttribute("aria-expanded", String(next));
+			primaryNav.classList.toggle("is-open", next);
+		};
 
 		const setBioLanguage = (language) => {
 			if (!bioToggleEs || !bioToggleEn || !bioTextEs || !bioTextEn) return;
@@ -1742,6 +1985,7 @@ const contactMethods = [
 
 		bioToggleEs?.addEventListener("click", () => setBioLanguage("es"));
 		bioToggleEn?.addEventListener("click", () => setBioLanguage("en"));
+		navToggle?.addEventListener("click", toggleNavigation);
 		setBioLanguage("es");
 	</script>
 </body>
