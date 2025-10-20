@@ -203,6 +203,18 @@
 				color: #972028;
 			}
 
+			.message.warning {
+				background: #fff4e6;
+				border: 1px solid #f7d4a8;
+				color: #a05b07;
+			}
+			.message.warning2 {
+				background: rgba(251, 227, 231, 0.9);
+				border: 1px solid rgba(189, 36, 49, 0.35);
+				color: var(--accent-dark);
+				box-shadow: 0 16px 32px rgba(189, 36, 49, 0.12);
+			}
+
 			.event-toolbar {
 				display: flex;
 				align-items: center;
@@ -398,6 +410,12 @@
 					<div class="event-toolbar">
 						<span>Sesión iniciada. Gestiona la agenda en tiempo real.</span>
 						<button class="secondary" id="logout-button" type="button">Cerrar sesión</button>
+					</div>
+					<div class="message warning" role="note">
+						Los eventos cuya fecha ya pasó se eliminan automáticamente al cargar la agenda.
+					</div>
+					<div class="message warning2" role="note">
+						Es normal que al guardar o modificar un evento, el sistema te pida re-introducir las credenciales. Sé que es un poco tedioso. Asegúrate de guardar cambios individuales en cada evento y no tratar de guardar varios a la vez.
 					</div>
 					<form id="event-form" class="event-block">
 						<div class="message info event-block-note">

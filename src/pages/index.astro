@@ -258,37 +258,30 @@ const platformIconSrc: Record<string, string> = {
 	default: "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/svgs/solid/music.svg",
 };
 
-const contactHighlights = [
-	"Contratación de conciertos y festivales",
-	"Masterclasses y residencias artísticas",
-	"Solicitudes de prensa y entrevistas",
-];
-
-const contactIconSrc: Record<string, string> = {
-	gmail: "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/svgs/solid/envelope.svg",
-	whatsapp: "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/svgs/brands/whatsapp.svg",
-	instagram: "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/svgs/brands/instagram.svg",
-	default: "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/svgs/solid/address-book.svg",
-};
-
-const contactMethods = [
+const promoterContacts = [
 	{
-		label: "Email",
-		value: "contacto@antoniorey.com",
-		href: "mailto:contacto@antoniorey.com",
-		icon: "gmail",
+		label: "Promotor España",
+		name: "Antonio Montoya",
+		contact: "+34 616 350 514",
+		href: "tel:+34616350514",
 	},
 	{
-		label: "WhatsApp",
-		value: "+34 600 000 000",
-		href: "https://wa.me/34600000000",
-		icon: "whatsapp",
+		label: "Promotor México",
+		name: "Marcos",
+		contact: "Marcos@art-x2.com",
+		href: "mailto:Marcos@art-x2.com",
 	},
 	{
-		label: "Instagram",
-		value: "@antonioreyflamenco",
-		href: "https://www.instagram.com/antonioreyflamenco",
-		icon: "instagram",
+		label: "Promotor EE.UU.",
+		name: "Pamela",
+		contact: "pamela@gmail.com",
+		href: "mailto:pamela@gmail.com",
+	},
+	{
+		label: "Promotor Latinoamérica (resto)",
+		name: "Natalia R.",
+		contact: "masgestioncultural@gmail.com",
+		href: "mailto:masgestioncultural@gmail.com",
 	},
 ];
 
@@ -1174,106 +1167,56 @@ const contactMethods = [
 							}
 
 		.contact-panel {
-			margin-top: 2.6rem;
-			padding: clamp(2rem, 6vw, 3.2rem);
+			margin-top: 2rem;
+			padding: clamp(1.4rem, 3.8vw, 2.2rem);
 			border: 1px solid var(--border);
-			border-radius: 24px;
-			background: linear-gradient(140deg, rgba(180, 31, 44, 0.05), rgba(255, 255, 255, 0.8));
-			display: grid;
-			gap: clamp(1.8rem, 5vw, 2.8rem);
-			grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-			align-items: start;
+			border-radius: 20px;
+			background: linear-gradient(145deg, rgba(180, 31, 44, 0.04), rgba(255, 255, 255, 0.9));
 		}
 
-			.contact-intro {
-				display: grid;
-				gap: 1rem;
-			}
-
-			.contact-intro h3 {
-				margin: 0;
-				font-family: var(--font-serif);
-				font-size: clamp(1.6rem, 4vw, 2.1rem);
-			}
-
-			.contact-intro p {
-				margin: 0;
-				color: var(--muted);
-			}
-
-			.contact-tags {
+			.promoter-list {
 				margin: 0;
 				padding: 0;
 				list-style: none;
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.6rem;
-			}
-
-			.contact-tags li {
-				padding: 0.4rem 0.8rem;
-				border-radius: 999px;
-				border: 1px solid var(--border);
-				background: rgba(255, 255, 255, 0.6);
-				color: var(--muted);
-				font-size: 0.85rem;
-			}
-
-			.contact-methods {
 				display: grid;
-				gap: 0.85rem;
+				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+				gap: clamp(0.8rem, 2vw, 1.1rem);
 			}
 
-			.contact-method {
-				display: flex;
-				align-items: center;
-				gap: 0.85rem;
-				padding: 0.9rem 1.1rem;
+			.promoter-item {
+				padding: 1rem 1.2rem;
 				border-radius: 16px;
-				background: var(--bg);
-				border: 1px solid var(--border);
-				box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
-				transition: transform 160ms ease, box-shadow 160ms ease;
-				color: var(--text);
-			}
-
-			.contact-method:hover,
-			.contact-method:focus-visible {
-				transform: translateY(-2px);
-				box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
-			}
-
-			.contact-method-icon {
-				width: 2.4rem;
-				height: 2.4rem;
-				border-radius: 40%;
-				background: var(--bg-muted);
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-
-			.contact-method-icon img {
-				width: 1.2rem;
-				height: 1.2rem;
-				object-fit: contain;
-							}
-
-			.contact-method-text {
+				border: 1px solid rgba(20, 19, 18, 0.12);
+				background: rgba(255, 255, 255, 0.86);
+				box-shadow: 0 8px 18px rgba(20, 19, 18, 0.08);
 				display: grid;
-				gap: 0.1rem;
+				gap: 0.35rem;
+				text-align: left;
 			}
 
-			.contact-method-label {
-				font-size: 0.75rem;
-				letter-spacing: 0.12em;
+			.promoter-label {
+				font-size: 0.74rem;
+				letter-spacing: 0.16em;
 				text-transform: uppercase;
-				color: var(--muted);
+				color: rgba(20, 19, 18, 0.62);
+				font-weight: 600;
 			}
 
-			.contact-method-value {
+			.promoter-name {
 				font-weight: 600;
 				color: var(--text);
+			}
+
+			.promoter-contact {
+				color: var(--accent-dark);
+				font-weight: 600;
+				text-decoration: none;
+				word-break: break-word;
+			}
+
+			.promoter-contact:hover,
+			.promoter-contact:focus-visible {
+				color: var(--accent);
 			}
 
 		footer {
@@ -1440,58 +1383,21 @@ const contactMethods = [
 				margin: 0 auto;
 			}
 
-			.award-card,
-			.contact-method,
-			.contact-intro {
+			.award-card {
 				margin: 0 auto;
 				text-align: center;
 			}
 
 			.contact-panel {
-				gap: 1.5rem;
-				padding: 1.8rem 1.4rem;
+				padding: 1.5rem 1.2rem;
 			}
 
-			.contact-method {
-				flex-direction: column;
-				align-items: flex-start;
-				gap: 0.65rem;
+			.promoter-list {
+				grid-template-columns: 1fr;
 			}
 
-			.contact-methods {
+			.promoter-item {
 				width: 100%;
-				display: grid;
-				justify-items: center;
-				gap: 0.9rem;
-			}
-
-			.contact-method,
-			.contact-intro {
-				width: min(300px, 100%);
-				margin: 0 auto;
-			}
-
-			.contact-method {
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-				justify-content: flex-start;
-				gap: 0.75rem;
-				padding: 0.95rem 1.1rem;
-				box-sizing: border-box;
-			}
-
-			.contact-method-icon {
-				flex-shrink: 0;
-			}
-
-			.contact-method-text {
-				align-items: flex-start;
-				text-align: left;
-			}
-
-			.contact-method-text {
-				align-items: flex-start;
 			}
 
 			.awards-grid {
@@ -1508,12 +1414,8 @@ const contactMethods = [
 	}
 
 	@media (max-width: 360px) {
-		.contact-method {
-			padding: 0.9rem;
-		}
-
-		.contact-method-text {
-			font-size: 0.9rem;
+		.promoter-item {
+			padding: 0.9rem 1rem;
 		}
 
 		footer .container {
@@ -1549,9 +1451,8 @@ const contactMethods = [
 				flex-wrap: wrap;
 			}
 
-			.contact-method {
-				flex-direction: column;
-				align-items: flex-start;
+			.promoter-list {
+				align-items: stretch;
 			}
 		}
 
@@ -1932,43 +1833,24 @@ const contactMethods = [
 				</div>
 			</section>
 
-			<section id="contacto" aria-labelledby="contacto-heading">
-				<div class="container">
-					<div class="section-header">
-						<h2 id="contacto-heading">Contacto profesional</h2>
-						<p>Gestión de conciertos, colaboraciones y entrevistas.</p>
-					</div>
-					<div class="contact-panel">
-						<div class="contact-intro">
-							<h3>Oficina de representación</h3>
-							<p>
-								Coordinamos giras internacionales, residencias y apariciones mediáticas. Escríbenos con la
-								propuesta y responderemos en menos de 24 horas laborales.
-							</p>
-							<ul class="contact-tags">
-								{contactHighlights.map((item) => (
-									<li>{item}</li>
-								))}
-							</ul>
+				<section id="contacto" aria-labelledby="contacto-heading">
+					<div class="container">
+						<div class="section-header">
+							<h2 id="contacto-heading">Promotores oficiales</h2>
+							<p>Contacta directamente con la persona promotora asignada a tu territorio.</p>
 						</div>
-						<div class="contact-methods">
-							{contactMethods.map((method) => (
-								<a class="contact-method" href={method.href} target="_blank" rel="noreferrer">
-									<span class="contact-method-icon" aria-hidden="true">
-										<img
-											src={contactIconSrc[method.icon] ?? contactIconSrc.default}
-											alt=""
-											loading="lazy"
-											decoding="async"
-										/>
-									</span>
-									<span class="contact-method-text">
-										<span class="contact-method-label">{method.label}</span>
-										<span class="contact-method-value">{method.value}</span>
-									</span>
-								</a>
+						<div class="contact-panel">
+							<ul class="promoter-list">
+								{promoterContacts.map((promoter) => (
+									<li class="promoter-item">
+										<span class="promoter-label">{promoter.label}</span>
+										{promoter.name ? <span class="promoter-name">{promoter.name}</span> : null}
+									<a class="promoter-contact" href={promoter.href} target="_blank" rel="noreferrer">
+										{promoter.contact}
+									</a>
+								</li>
 							))}
-						</div>
+						</ul>
 					</div>
 				</div>
 			</section>

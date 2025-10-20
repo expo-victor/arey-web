@@ -1,14 +1,5 @@
 [
   {
-    "id": "sevilla-2024-11-18",
-    "title": "Concierto en Guadalcacín",
-    "location": "Guadalcacín, Jerez de la Frontera",
-    "date": "2025-10-17",
-    "time": "20:00",
-    "description": "Concierto privado.",
-    "image": "https://www.guadalcacin.es/images/SliderPrincipal/slide4.jpg"
-  },
-  {
     "id": "madrid-2024-12-05",
     "title": "Concierto en Múnich",
     "location": "Múnich",
@@ -25,14 +16,5 @@
     "location": "Ópera House, Dubái",
     "description": "Concierto en el famoso Ópera House de Dubái.",
     "image": "https://www.dubaiopera.com/media/Venue_1280x720_03.png"
-  },
-  {
-    "id": "concierto-en-el-teatro-liceu-2025-11-23",
-    "title": "Concierto en el Teatro Liceu",
-    "date": "2025-11-23",
-    "time": "20:00",
-    "location": "Gran Teatre del Liceu, Barcelona",
-    "description": "Concierto en el Gran Teatro Liceu, Barcelona.",
-    "image": "https://www.liceubarcelona.cat/sites/default/files/2023-01/banner-donacions.jpg"
   }
 ]
