@@ -4,8 +4,28 @@ import { readEvents } from "../server/agendaStore";
 const currentYear = new Date().getFullYear();
 const heroImage = "/Princ.jpg";
 const heroImageAlt = "Antonio Rey interpretando en directo con su guitarra.";
-const bioImage = "/Princ2.jpg";
-const bioImageAlt = "Antonio Rey afinando su guitarra antes de salir al tablao.";
+const bioImages = [
+	{
+		src: "/Princ2.jpg",
+		alt: "Antonio Rey afinando su guitarra antes de salir al tablao.",
+		caption: "Archivo visual · Sevilla, 2024.",
+	},
+	{
+		src: "/Princ.jpg",
+		alt: "Antonio Rey en concierto durante el Festival Flamenco de Sevilla.",
+		caption: "Concierto en directo · Festival Flamenco.",
+	},
+	{
+		src: "/ANTONIO-REY-Web1.png",
+		alt: "Retrato promocional de Antonio Rey sosteniendo su guitarra flamenca.",
+		caption: "Retrato promocional de estudio.",
+	},
+	{
+		src: "/ANTONIO-REY-Web-Galeria10-r8gehyyz58fwzq5a95rgro4ibwthhtezc36b352yo0.jpg",
+		alt: "Antonio Rey sonríe con su guitarra en un patio andaluz.",
+		caption: "Sesión fotográfica · Jerez de la Frontera.",
+	},
+];
 const awards = [
 	{
 		image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1X0CzX3AOBTap7IlVWfSMpaDya4a32cgoCw&s",
@@ -775,14 +795,38 @@ const promoterContacts = [
 			text-align: center;
 		}
 
-		@media (max-width: 720px) {
-			.bio-layout {
-				grid-template-columns: 1fr;
-			}
+	@media (max-width: 720px) {
+		.bio-layout {
+			grid-template-columns: 1fr;
+		}
 
-			.contact-panel {
-				grid-template-columns: 1fr;
-			}
+		.bio-visual {
+			width: min(420px, 100%);
+			margin: 0 auto;
+		}
+
+		.bio-gallery {
+			flex-wrap: nowrap;
+			justify-content: flex-start;
+			overflow-x: auto;
+			gap: 0.5rem;
+			padding-bottom: 0.3rem;
+			scroll-snap-type: x proximity;
+			-webkit-overflow-scrolling: touch;
+		}
+
+		.bio-gallery::-webkit-scrollbar {
+			display: none;
+		}
+
+		.bio-thumb {
+			flex: 0 0 68px;
+			scroll-snap-align: center;
+		}
+
+		.contact-panel {
+			grid-template-columns: 1fr;
+		}
 
 			.timeline {
 				border-left: none;
@@ -861,15 +905,16 @@ const promoterContacts = [
 			display: none;
 		}
 
-		.bio-media {
-			position: relative;
-			border: 1px solid var(--border);
-			border-radius: 16px;
-			overflow: hidden;
-			min-height: clamp(24rem, 48vw, 32rem);
-			background: var(--bg-muted);
-			box-shadow: 0 28px 60px rgba(0, 0, 0, 0.14);
-		}
+	.bio-media {
+		position: relative;
+		border: 1px solid var(--border);
+		border-radius: 16px;
+		overflow: hidden;
+		min-height: clamp(24rem, 48vw, 32rem);
+		background: var(--bg-muted);
+		box-shadow: 0 28px 60px rgba(0, 0, 0, 0.14);
+		width: 100%;
+	}
 
 		.bio-media img {
 			position: absolute;
@@ -878,6 +923,63 @@ const promoterContacts = [
 			height: 100%;
 			object-fit: cover;
 			transform: scale(1.02);
+		}
+
+	.bio-visual {
+		display: grid;
+		gap: 0.9rem;
+		align-content: start;
+		justify-items: center;
+	}
+
+	.bio-gallery {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+		justify-content: center;
+	}
+
+		.bio-thumb {
+			border: 1px solid rgba(20, 19, 18, 0.16);
+			border-radius: 12px;
+			width: 72px;
+			height: 72px;
+			padding: 0;
+			background: rgba(255, 255, 255, 0.9);
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			overflow: hidden;
+			cursor: pointer;
+			transition: transform 140ms ease, box-shadow 180ms ease, border-color 180ms ease;
+		}
+
+		.bio-thumb img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block;
+		}
+
+	.bio-thumb:hover,
+	.bio-thumb:focus-visible {
+		transform: translateY(-2px);
+		box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+		border-color: rgba(177, 33, 43, 0.4);
+	}
+
+	.bio-thumb:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+	}
+
+		.bio-thumb[aria-pressed="true"] {
+			border-color: var(--accent);
+			box-shadow: 0 12px 24px rgba(177, 33, 43, 0.25);
+		}
+
+		.bio-caption[hidden] {
+			display: none;
 		}
 
 		.bio-text-toggle {
@@ -1278,6 +1380,14 @@ const promoterContacts = [
 				min-height: clamp(18rem, 60vw, 26rem);
 			}
 
+			.bio-visual {
+				justify-items: center;
+			}
+
+			.bio-gallery {
+				justify-content: center;
+			}
+
 			.agenda-layout {
 				gap: 2rem;
 			}
@@ -1356,6 +1466,15 @@ const promoterContacts = [
 				min-height: clamp(20rem, 70vw, 26rem);
 			}
 
+			.bio-gallery {
+				justify-content: center;
+			}
+
+			.bio-thumb {
+				width: 64px;
+				height: 64px;
+			}
+
 			.bio-text-toggle {
 				justify-content: center;
 			}
@@ -1417,6 +1536,12 @@ const promoterContacts = [
 		.promoter-item {
 			padding: 0.9rem 1rem;
 		}
+
+	.bio-thumb {
+		width: 56px;
+		height: 56px;
+		flex: 0 0 56px;
+	}
 
 		footer .container {
 			gap: 1rem;
@@ -1713,10 +1838,43 @@ const promoterContacts = [
 					</p>
 				</div>
 						</div>
-						<div class="bio-media" aria-label="Retrato de Antonio Rey">
-					<img src={bioImage} alt={bioImageAlt} loading="lazy" decoding="async" />
-					<span class="bio-caption">Archivo visual · Antonio Rey</span>
-				</div>
+						<div class="bio-visual">
+							<div class="bio-media" data-bio-gallery aria-label="Retrato de Antonio Rey">
+								<img
+									data-bio-image
+									src={bioImages[0]?.src}
+									alt={bioImages[0]?.alt ?? "Retrato de Antonio Rey"}
+									loading="lazy"
+									decoding="async"
+								/>
+								<span
+									class="bio-caption"
+									data-bio-caption
+									hidden={!bioImages[0]?.caption}
+								>
+									{bioImages[0]?.caption ?? ""}
+								</span>
+							</div>
+				{bioImages.length > 1 ? (
+					<div class="bio-gallery" role="list">
+						{bioImages.map((item, index) => (
+							<button
+								class="bio-thumb"
+								type="button"
+								data-bio-thumb
+								data-src={item.src}
+								data-alt={item.alt}
+								data-caption={item.caption ?? ""}
+								role="listitem"
+								aria-pressed={index === 0}
+								aria-label={`Ver imagen ${index + 1}: ${item.alt}`}
+							>
+								<img src={item.src} alt="" loading="lazy" decoding="async" />
+							</button>
+						))}
+					</div>
+				) : null}
+						</div>
 					</div>
 				</div>
 			</section>
@@ -1864,11 +2022,14 @@ const promoterContacts = [
 	</footer>
 	<script type="module">
 		const navToggle = document.querySelector(".nav-toggle");
-		const primaryNav = document.querySelector("#primary-nav");
-		const bioToggleEs = document.querySelector("#bio-toggle-es");
-		const bioToggleEn = document.querySelector("#bio-toggle-en");
-		const bioTextEs = document.querySelector("#bio-text-es");
-		const bioTextEn = document.querySelector("#bio-text-en");
+	const primaryNav = document.querySelector("#primary-nav");
+	const bioToggleEs = document.querySelector("#bio-toggle-es");
+	const bioToggleEn = document.querySelector("#bio-toggle-en");
+	const bioTextEs = document.querySelector("#bio-text-es");
+	const bioTextEn = document.querySelector("#bio-text-en");
+	const bioThumbButtons = Array.from(document.querySelectorAll("[data-bio-thumb]"));
+	const bioMediaImage = document.querySelector("[data-bio-image]");
+	const bioMediaCaption = document.querySelector("[data-bio-caption]");
 
 		const toggleNavigation = () => {
 			if (!navToggle || !primaryNav) return;
@@ -1892,10 +2053,44 @@ const promoterContacts = [
 			}
 		};
 
-		bioToggleEs?.addEventListener("click", () => setBioLanguage("es"));
-		bioToggleEn?.addEventListener("click", () => setBioLanguage("en"));
-		navToggle?.addEventListener("click", toggleNavigation);
-		setBioLanguage("es");
+	bioToggleEs?.addEventListener("click", () => setBioLanguage("es"));
+	bioToggleEn?.addEventListener("click", () => setBioLanguage("en"));
+	navToggle?.addEventListener("click", toggleNavigation);
+
+	const selectBioThumbnail = (button) => {
+		if (!(button instanceof HTMLButtonElement)) return;
+		if (!(bioMediaImage instanceof HTMLImageElement)) return;
+		const nextSrc = button.getAttribute("data-src") ?? "";
+		const nextAlt = button.getAttribute("data-alt") ?? "";
+		const nextCaption = button.getAttribute("data-caption") ?? "";
+
+		if (nextSrc) {
+			bioMediaImage.src = nextSrc;
+		}
+		bioMediaImage.alt = nextAlt;
+
+		if (bioMediaCaption instanceof HTMLElement) {
+			if (nextCaption) {
+				bioMediaCaption.textContent = nextCaption;
+				bioMediaCaption.hidden = false;
+			} else {
+				bioMediaCaption.textContent = "";
+				bioMediaCaption.hidden = true;
+			}
+		}
+
+		bioThumbButtons.forEach((thumb) => {
+			thumb.setAttribute("aria-pressed", String(thumb === button));
+		});
+	};
+
+	bioThumbButtons.forEach((button) => {
+		if (button instanceof HTMLButtonElement) {
+			button.addEventListener("click", () => selectBioThumbnail(button));
+		}
+	});
+
+	setBioLanguage("es");
 	</script>
 </body>
 </html>
