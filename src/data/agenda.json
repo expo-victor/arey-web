@@ -1,14 +1,5 @@
 [
   {
-    "id": "madrid-2024-12-05",
-    "title": "Concierto en Múnich",
-    "location": "Múnich",
-    "date": "2025-10-25",
-    "time": "20:30",
-    "description": "Recital íntimo de guitarra con repertorio clásico y composiciones recientes.",
-    "image": "https://a.travel-assets.com/findyours-php/viewfinder/images/res70/501000/501501-munich.jpg"
-  },
-  {
     "id": "concierto-en-dub-i-2025-11-20",
     "title": "Concierto en Dubái",
     "date": "2025-11-20",
