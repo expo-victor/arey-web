@@ -302,26 +302,41 @@ const promoterContacts = [
 	{
 		label: "Promotor España",
 		name: "Antonio Montoya",
-		contact: "+34 616 350 514",
-		href: "tel:+34616350514",
+		contacts: [
+			{ value: "+34 616 350 514", href: "tel:+34616350514" },
+		],
 	},
 	{
 		label: "Promotor México",
 		name: "Ricardo Marcos",
-		contact: "Marcos@art-x2.com",
-		href: "mailto:Marcos@art-x2.com",
+		contacts: [
+			{ value: "Marcos@art-x2.com", href: "mailto:Marcos@art-x2.com" },
+		],
 	},
 	{
 		label: "Promotor EE.UU.",
 		name: "Pamela Nicolás",
-		contact: "pamela7@gmail.com",
-		href: "mailto:pamela7@gmail.com",
+		contacts: [
+			{ value: "pamela7@gmail.com", href: "mailto:pamela7@gmail.com" },
+		],
 	},
 	{
 		label: "Promotor Latinoamérica (resto)",
 		name: "Natalia Rodríguez",
-		contact: "masgestioncultural@gmail.com",
-		href: "mailto:masgestioncultural@gmail.com",
+		contacts: [
+			{ value: "masgestioncultural@gmail.com", href: "mailto:masgestioncultural@gmail.com" },
+		],
+	},
+	{
+		label: "Promotor Alemania",
+		name: "Andreas",
+		contacts: [
+			{ value: "+49 170 1835871", href: "tel:+491701835871" },
+			{
+				value: "Baumgartner@sawallisch-stiftung.de",
+				href: "mailto:Baumgartner@sawallisch-stiftung.de",
+			},
+		],
 	},
 ];
 
@@ -2037,17 +2052,25 @@ const promoterContacts = [
 					<div class="container">
 						<div class="section-header">
 							<h2 id="contacto-heading">Promotores oficiales</h2>
-							<p>Contacta directamente con la persona promotora asignada a tu territorio.</p>
+							<p>Contacta directamente con la persona promotora asignada a tu territorio. (Haz clic sobre los emails para abrir la app directamente).</p>
 						</div>
 						<div class="contact-panel">
 							<ul class="promoter-list">
 								{promoterContacts.map((promoter) => (
-									<li class="promoter-item">
+									<li class="promoter-item" key={promoter.label}>
 										<span class="promoter-label">{promoter.label}</span>
 										{promoter.name ? <span class="promoter-name">{promoter.name}</span> : null}
-									<a class="promoter-contact" href={promoter.href} target="_blank" rel="noreferrer">
-										{promoter.contact}
-									</a>
+										{promoter.contacts?.map((contact) => (
+											<a
+												class="promoter-contact"
+												href={contact.href}
+												target="_blank"
+												rel="noreferrer"
+												key={contact.href}
+											>
+												{contact.value}
+											</a>
+										))}
 								</li>
 							))}
 						</ul>
